@@ -1,0 +1,10 @@
+h_min: 100        #hsv min
+s_min: 20         #20
+v_min: 20         #40
+h_max: 120        #hsv max
+s_max: 200        #50
+v_max: 200        #80
+canny_lower: 200  #canny params
+canny_upper: 300
+canny_ker: 3
+min_contour_area: 500
