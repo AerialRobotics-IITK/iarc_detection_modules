@@ -4,6 +4,7 @@
 #include <sensor_msgs/Image.h>
 
 #include <plate_detector/plate_detector.hpp>
+#include <util_msgs/centre.h>
 
 namespace iarc2020::plate_detector_ros {
 
@@ -23,11 +24,10 @@ class PlateDetectorROS {
 		ros::Publisher centre_pub_;
 		ros::Publisher thresh_pub_;
 		ros::Publisher contour_pub_;
-		ros::Publisher centre_img_pub_;
 
-		ariitk::plate_detector::PlateDetector detect_;
+		iarc2020::plate_detector::PlateDetector detect_;
 
-		// detector_msgs::centre centre_coord_;
+		util_msgs::centre centre_coord_;
 };
 
-} // namespace ariitk::plate_detector_ros
+} // namespace iarc2020::plate_detector_ros

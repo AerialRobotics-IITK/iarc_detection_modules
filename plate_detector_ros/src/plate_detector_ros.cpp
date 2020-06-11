@@ -28,10 +28,9 @@ void PlateDetectorROS::init(ros::NodeHandle& nh) {
 	detect_.setCannyParams(canny_lower, canny_upper, canny_ker);
 	detect_.setMinArea(min_contour_area);
 
-	// centre_pub_ = nh_private.advertise<detector_msgs::centre>("centre_coord", 10);
+	centre_pub_ = nh_private.advertise<util_msgs::centre>("centre_coord", 10);
 	thresh_pub_ = nh_private.advertise<sensor_msgs::Image>("thresh_img", 10);
 	contour_pub_ = nh_private.advertise<sensor_msgs::Image>("contours", 10);
-	// centre_img_pub_ = nh_private.advertise<sensor_msgs::Image>("centre_img", 10);
 }
 
 void PlateDetectorROS::run() {
@@ -41,23 +40,20 @@ void PlateDetectorROS::run() {
 	detect_.findGoodContours();
 	detect_.drawContours(img_);
 	detect_.fitRect(img_);
-	// detect_.findFrameCentre(img_);
 
-	// std::pair<int, int> centre_pair = detect_.getCentre();
-	// double distance = detect_.getDistance();
-	// centre_coord_.x = centre_pair.first;
-	// centre_coord_.y = centre_pair.second;
-	// centre_coord_.d = (float) distance;
-	// centre_coord_.header.stamp = ros::Time::now();
+	std::pair<int, int> centre_pair = detect_.getCentre();
+	double distance = detect_.getDistance();
+	centre_coord_.x = centre_pair.first;
+	centre_coord_.y = centre_pair.second;
+	centre_coord_.d = (float) distance;
+	centre_coord_.header.stamp = ros::Time::now();
 
 	sensor_msgs::ImagePtr thresh_msg = cv_bridge::CvImage(std_msgs::Header(), "mono8", detect_.getThresh()).toImageMsg();
 	sensor_msgs::ImagePtr contour_msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", img_).toImageMsg();
-	sensor_msgs::ImagePtr centre_msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", img_).toImageMsg();
 
 	thresh_pub_.publish(thresh_msg);
 	contour_pub_.publish(contour_msg);
-	centre_img_pub_.publish(centre_msg);
-	// centre_pub_.publish(centre_coord_);
+	centre_pub_.publish(centre_coord_);
 }
 
 void PlateDetectorROS::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
@@ -73,4 +69,4 @@ void PlateDetectorROS::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
 	img_ = cv_ptr_->image;
 }
 
-} // namespace ariitk::detector_ros
+} // namespace iarc2020::plate_detector_ros

@@ -4,4 +4,6 @@
     <node pkg="plate_detector_ros" type="plate_detector_ros_node" name="plate_detector_node" output="screen">
         <rosparam file="$(find plate_detector_ros)/config/param.yaml"/>
     </node>
+    <node pkg="plate_pose_estimation_ros" type="pose_estimation_ros_node" name="pose_estimation_node">
+    </node>
 </launch>

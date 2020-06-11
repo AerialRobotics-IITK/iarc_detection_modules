@@ -4,14 +4,14 @@
 #include <utility>
 #include <vector>
 
-namespace ariitk::plate_detector {
+namespace iarc2020::plate_detector {
 
 class PlateDetector {
 	public:
 		PlateDetector(){};
 		~PlateDetector();
 
-		// std::pair<int, int> getCentre() { return centre_; };
+		std::pair<int, int> getCentre() { return centre_; };
 
 		void setHSVMin(const int& h, const int& s, const int& v) { hsv_min_ = cv::Scalar(h, s, v); }
 		void setHSVMax(const int& h, const int& s, const int& v) { hsv_max_ = cv::Scalar(h, s, v); }
@@ -28,7 +28,7 @@ class PlateDetector {
 
 		cv::Mat getThresh() { return thresh_img_; };
 
-		// double getDistance() { return distance_; };
+		double getDistance() { return distance_; };
 		static double scalef;
 
 	private:
@@ -38,6 +38,9 @@ class PlateDetector {
 		cv::Scalar hsv_max_;
 
 		cv::Mat thresh_img_;
+
+		cv::Point2f center_;
+	    cv::Point2f rect_points[4]; 
 
 		std::vector<std::vector<cv::Point>> good_contours_;
 
@@ -49,4 +52,4 @@ class PlateDetector {
 		double distance_;
 };
 
-} // namespace ariitk::plate_detector
+} // namespace iarc2020::plate_detector
