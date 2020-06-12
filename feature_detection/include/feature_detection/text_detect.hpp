@@ -23,8 +23,6 @@ namespace ariitk::text_detect{
     std::vector<cv::KeyPoint> keypoints1;
     cv::Ptr<cv::xfeatures2d::SURF> detector = cv::xfeatures2d::SURF::create();
     std::string workspace_path_image;
-    //cv::Ptr<cv::DescriptorMatcher> matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
-    //cv::FlannBasedMatcher matcher = cv::FlannBasedMatcher(cv::makePtr<cv::flann::KDTreeIndexParams>(5));
     cv::BFMatcher matcher;
 
     public:
