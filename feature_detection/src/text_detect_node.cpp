@@ -1,6 +1,6 @@
 #include <feature_detection/text_detect.hpp>
 
-using namespace ariitk::text_detect;
+using namespace ariitk::TextDetect;
 
 int main(int argc,char** argv)
 {
@@ -8,7 +8,7 @@ int main(int argc,char** argv)
     ros::NodeHandle nh;
     ros::NodeHandle nh_private("~");
     
-    text_detect detect;
+    TextDetect detect;
 
     detect.init(nh,nh_private);
 

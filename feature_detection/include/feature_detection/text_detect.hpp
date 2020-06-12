@@ -12,18 +12,18 @@
 #include <sensor_msgs/image_encodings.h>
 #include <opencv2/imgproc.hpp>
 
-namespace ariitk::text_detect{
-    class text_detect {
+namespace ariitk::TextDetect{
+    class TextDetect {
     private:
-	ros::Publisher surf_image_pub,white_text_box_pub,detected_box_pub;
-    ros::Publisher surf_image_match_pub;
-	ros::Publisher image_pub_preprocess;
-	ros::Subscriber image_sub;
-    cv::Mat src,img_matches,descriptors1, surf,processed_frame,WhiteTextBox;
-    std::vector<cv::KeyPoint> keypoints1;
-    cv::Ptr<cv::xfeatures2d::SURF> detector = cv::xfeatures2d::SURF::create();
-    std::string workspace_path_image;
-    cv::BFMatcher matcher;
+	ros::Publisher surf_image_pub_,white_text_box_pub_,detected_box_pub_;
+    ros::Publisher surf_image_match_pub_;
+	ros::Publisher image_pub_preprocess_;
+	ros::Subscriber image_sub_;
+    cv::Mat src_,img_matches_,descriptors1_, surf_,processed_frame_;
+    std::vector<cv::KeyPoint> keypoints1_;
+    cv::Ptr<cv::xfeatures2d::SURF> detector_ = cv::xfeatures2d::SURF::create();
+    std::string workspace_path_image_;
+    cv::BFMatcher matcher_;
 
     public:
 	void imageCb(const sensor_msgs::ImageConstPtr& msg);
@@ -32,5 +32,5 @@ namespace ariitk::text_detect{
 	void run();
 	cv::Mat preprocess(cv::Mat& img);
     cv::Mat findWhiteTextBox(cv::Mat& frame);
-};
+    };
 }
