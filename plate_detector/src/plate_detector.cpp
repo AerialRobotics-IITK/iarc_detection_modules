@@ -43,16 +43,19 @@ void PlateDetector::findGoodContours() {
 void PlateDetector::fitRect(cv::Mat& board) {
 	int area_curr = 0;
 	int area_prev = 0;
-	centre_.first = -1;
-	centre_.second = -1;
+	center_.x = -1;
+	center_.y = -1;
 	distance_ = 0.0;
 
-	for(int i=0; i<good_contours_.size(); ++i){
+	for(int i=0; i<good_contours_.size(); ++i) {
+		if(good_contours_.empty()) {
+			break;
+		}
         cv::RotatedRect rotatedRect = cv::minAreaRect(good_contours_[i]);
         area_curr = rotatedRect.size.height*rotatedRect.size.width;
-		if(area_curr > area_prev){
+		if(area_curr > area_prev) {
 			center_ = rotatedRect.center;
-			rotatedRect.points( rect_points );
+			rotatedRect.points(rect_points);
 		}
 		area_prev = area_curr;
 	}
