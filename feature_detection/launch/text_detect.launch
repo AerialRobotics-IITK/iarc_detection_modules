@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+<include file="$(find iarc_simulation_tools)/launch/default.launch"/>
+    
+
+<node pkg="feature_detection" type="text_detect_node" name="text_detect_node" output="screen">
+  <rosparam file="$(find feature_detection)/config/text_detect.yaml" />
+</node>
+
+</launch>
