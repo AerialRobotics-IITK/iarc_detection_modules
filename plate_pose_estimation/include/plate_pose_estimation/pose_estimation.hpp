@@ -1,9 +1,9 @@
-#include <util_msgs/centre.h>
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 #include <tf/tf.h>
+#include <util_msgs/centre.h>
 
 namespace iarc2020::plate_pose_estimation {
 
@@ -11,10 +11,10 @@ class PlatePoseEstimation {
 	public:
 		PlatePoseEstimation();
 		~PlatePoseEstimation(){};
-		void getDistance(float& dist);
+		void getDistance(float &dist);
 		void setCamToQaud();
 		void setCamMatrix();
-		void setImgVec(float& x, float& y);
+		void setImgVec(float &x, float &y);
 		void setQuaternion(nav_msgs::Odometry odom);
 		void CamToQuad();
 		void QuadToGlob(nav_msgs::Odometry odom);

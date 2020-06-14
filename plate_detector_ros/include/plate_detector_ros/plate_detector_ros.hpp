@@ -12,11 +12,11 @@ class PlateDetectorROS {
 	public:
 		PlateDetectorROS(){};
 		~PlateDetectorROS(){};
-		void init(ros::NodeHandle& nh);
+		void init(ros::NodeHandle &nh);
 		void run();
 
 	private:
-		void imageCallback(const sensor_msgs::ImageConstPtr& msg);
+		void imageCallback(const sensor_msgs::ImageConstPtr &msg);
 		cv::Mat img_;
 
 		ros::Subscriber img_sub_;

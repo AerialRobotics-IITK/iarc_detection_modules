@@ -13,18 +13,22 @@ class PlateDetector {
 
 		std::pair<int, int> getCentre() { return centre_; };
 
-		void setHSVMin(const int& h, const int& s, const int& v) { hsv_min_ = cv::Scalar(h, s, v); }
-		void setHSVMax(const int& h, const int& s, const int& v) { hsv_max_ = cv::Scalar(h, s, v); }
+		void setHSVMin(const int &h, const int &s, const int &v) {
+			hsv_min_ = cv::Scalar(h, s, v);
+		}
+		void setHSVMax(const int &h, const int &s, const int &v) {
+			hsv_max_ = cv::Scalar(h, s, v);
+		}
 
-		void setMinArea(const int& a) { min_contour_area_ = a; }
+		void setMinArea(const int &a) { min_contour_area_ = a; }
 
-		void setCannyParams(const int&, const int&, const int&);
+		void setCannyParams(const int &, const int &, const int &);
 
-		void thresholdImage(cv::Mat&);
+		void thresholdImage(cv::Mat &);
 		void findGoodContours();
-		void drawContours(cv::Mat&);
-		void findFrameCentre(cv::Mat&);
-		void fitRect(cv::Mat&);
+		void drawContours(cv::Mat &);
+		void findFrameCentre(cv::Mat &);
+		void fitRect(cv::Mat &);
 
 		cv::Mat getThresh() { return thresh_img_; };
 
@@ -40,7 +44,7 @@ class PlateDetector {
 		cv::Mat thresh_img_;
 
 		cv::Point2f center_;
-	    cv::Point2f rect_points[4]; 
+		cv::Point2f rect_points[4];
 
 		std::vector<std::vector<cv::Point>> good_contours_;
 
