@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>plate_detector_ros</name>
+  <version>0.0.0</version>
+  <description>The plate_detector_ros package</description>
+
+  <maintainer email="atharva@todo.todo">atharva</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>catkin_simple</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <depend>cv_bridge</depend>
+  <depend>plate_detector</depend>
+  <depend>util_msgs</depend>
+
+</package>
