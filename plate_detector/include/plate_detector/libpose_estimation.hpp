@@ -10,19 +10,19 @@
 namespace iarc2020::plate_pose_estimation {
 
 class PlatePoseEstimation {
-  public:
+    public:
     PlatePoseEstimation();
     ~PlatePoseEstimation(){};
-    void getDistance(float &dist);
+    void getDistance(float& dist);
     void setCamToQaud();
     void setCamMatrix();
-    void setImgVec(float &x, float &y);
+    void setImgVec(float& x, float& y);
     void setQuaternion(nav_msgs::Odometry odom);
     void CamToQuad();
     void QuadToGlob(nav_msgs::Odometry odom);
     Eigen::Vector3d getGlobCoord() { return glob_coord_; };
 
-  private:
+    private:
     Eigen::Matrix3d scale_up_;
     Eigen::Matrix3d cam_matrix_;
     Eigen::Matrix3d cam_to_quad_;
@@ -35,4 +35,4 @@ class PlatePoseEstimation {
     Eigen::Vector3d glob_coord_;
 };
 
-} // namespace iarc2020::plate_pose_estimation
+}  // namespace iarc2020::plate_pose_estimation

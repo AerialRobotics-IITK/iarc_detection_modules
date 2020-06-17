@@ -9,35 +9,31 @@
 namespace iarc2020::plate_detector {
 
 class PlateDetector {
-  public:
+    public:
     PlateDetector(){};
     ~PlateDetector();
 
     std::pair<int, int> getCentre() { return centre_; };
 
-    void setHSVMin(const int &h, const int &s, const int &v) {
-      hsv_min_ = cv::Scalar(h, s, v);
-    }
-    void setHSVMax(const int &h, const int &s, const int &v) {
-      hsv_max_ = cv::Scalar(h, s, v);
-    }
+    void setHSVMin(const int& h, const int& s, const int& v) { hsv_min_ = cv::Scalar(h, s, v); }
+    void setHSVMax(const int& h, const int& s, const int& v) { hsv_max_ = cv::Scalar(h, s, v); }
 
-    void setMinArea(const int &a) { min_contour_area_ = a; }
+    void setMinArea(const int& a) { min_contour_area_ = a; }
 
-    void setCannyParams(const int &, const int &, const int &);
+    void setCannyParams(const int&, const int&, const int&);
 
-    void thresholdImage(cv::Mat &);
+    void thresholdImage(cv::Mat&);
     void findGoodContours();
-    void drawContours(cv::Mat &);
-    void findFrameCentre(cv::Mat &);
-    void fitRect(cv::Mat &);
+    void drawContours(cv::Mat&);
+    void findFrameCentre(cv::Mat&);
+    void fitRect(cv::Mat&);
 
     cv::Mat getThresh() { return thresh_img_; };
 
     double getDistance() { return distance_; };
     static double scalef;
 
-  private:
+    private:
     std::pair<int, int> centre_;
 
     cv::Scalar hsv_min_;
