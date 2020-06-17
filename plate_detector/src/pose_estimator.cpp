@@ -3,9 +3,8 @@
 namespace iarc2020::plate_pose_estimation_ros {
 
 void PlatePoseEstimationROS::init(ros::NodeHandle& nh) {
-    // TODO: add remaps in launch files
-    centre_coord_sub_ = nh.subscribe("/firefly/plate_detector_node/centre_coord", 10, &PlatePoseEstimationROS::centreCallback, this);
-    odom_sub_ = nh.subscribe("/firefly/ground_truth/odometry", 10, &PlatePoseEstimationROS::odomCallback, this);
+    centre_coord_sub_ = nh.subscribe("centre_coord", 10, &PlatePoseEstimationROS::centreCallback, this);
+    odom_sub_ = nh.subscribe("odom", 10, &PlatePoseEstimationROS::odomCallback, this);
 
     ros::NodeHandle nh_private("~");
 

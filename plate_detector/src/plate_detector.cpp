@@ -8,8 +8,7 @@ void PlateDetectorROS::init(ros::NodeHandle& nh) {
     int canny_lower, canny_upper, canny_ker;
     int min_contour_area;
 
-    // TODO: add remaps in launch file
-    img_sub_ = nh.subscribe("/firefly/camera_front/image_raw", 1, &PlateDetectorROS::imageCallback, this);
+    img_sub_ = nh.subscribe("image_raw", 1, &PlateDetectorROS::imageCallback, this);
 
     ros::NodeHandle nh_private("~");
 
