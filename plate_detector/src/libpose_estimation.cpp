@@ -3,55 +3,34 @@
 namespace iarc2020::plate_pose_estimation {
 
 PlatePoseEstimation::PlatePoseEstimation() {
-    // TODO: obtain camera parameters from topic
-    cam_matrix_(0, 0) = 320.25492609007654;
-    cam_matrix_(0, 1) = 0;
-    cam_matrix_(0, 2) = 320.5;
-    cam_matrix_(1, 0) = 0;
-    cam_matrix_(1, 1) = 320.25492609007654;
-    cam_matrix_(1, 2) = 240.5;
-    cam_matrix_(2, 0) = 0;
-    cam_matrix_(2, 1) = 0;
-    cam_matrix_(2, 2) = 1.0;
+    // clang-format off
+    cam_matrix_ << 320.25492609007654, 0, 320.5,
+                   0, 320.25492609007654, 240.5,
+                   0, 0, 1;
 
-    // TODO: from params
-    cam_to_quad_(0, 0) = 0;
-    cam_to_quad_(0, 1) = 0;
-    cam_to_quad_(0, 2) = 1;
-    cam_to_quad_(1, 0) = -1;
-    cam_to_quad_(1, 1) = 0;
-    cam_to_quad_(1, 2) = 0;
-    cam_to_quad_(2, 0) = 0;
-    cam_to_quad_(2, 1) = -1;
-    cam_to_quad_(2, 2) = 0;
+    cam_to_quad_ << 0, 0, 1,
+                    -1, 0, 0,
+                    0, -1, 0;
+    // clang-format on
 
-    img_vec_(0) = 0;
-    img_vec_(1) = 0;
-    img_vec_(2) = 1;
-
-    // TODO: params
-    t_cam_(0) = 0.0;
-    t_cam_(1) = 0.0;
-    t_cam_(2) = 0.02;
-}
-void PlatePoseEstimation::getDistance(float& dist) {
-    for (int i = 0; i < 3; i += 1) {
-        for (int j = 0; j < 3; j += 1) {
-            if (i == j) {
-                scale_up_(i, j) = dist;
-            } else {
-                scale_up_(i, j) = 0;
-            }
-        }
-    }
+    img_vec_ = Eigen::Vector3d(0, 0, 1);
+    t_cam_ = Eigen::Vector3d(0, 0, 0.02);
 }
 
-void PlatePoseEstimation::setImgVec(float& x, float& y) {
+void PlatePoseEstimation::getDistance(const float& dist) {
+    // clang-format off
+    scale_up_ << dist, 0, 0,
+                 0, dist, 0,
+                 0, 0, dist;
+    // clang-format on
+}
+
+void PlatePoseEstimation::setImgVec(const float& x, const float& y) {
     img_vec_(0) = x;
     img_vec_(1) = y;
 }
 
-void PlatePoseEstimation::setQuaternion(nav_msgs::Odometry odom) {
+void PlatePoseEstimation::setQuaternion(const nav_msgs::Odometry& odom) {
     tf::Quaternion quat =
         tf::Quaternion(odom.pose.pose.orientation.x, odom.pose.pose.orientation.y, odom.pose.pose.orientation.z, odom.pose.pose.orientation.w);
     Eigen::Quaterniond eigen_quat = Eigen::Quaterniond(quat.w(), quat.x(), quat.y(), quat.z());
@@ -64,7 +43,7 @@ void PlatePoseEstimation::CamToQuad() {
     quad_coord_ = cam_to_quad_ * scale_up_ * inv_cam_matrix * img_vec_ + t_cam_;
 }
 
-void PlatePoseEstimation::QuadToGlob(nav_msgs::Odometry odom) {
+void PlatePoseEstimation::QuadToGlob(const nav_msgs::Odometry& odom) {
     glob_coord_ = quad_to_glob_ * quad_coord_;
 
     glob_coord_(0) = glob_coord_(0) + odom.pose.pose.position.x;

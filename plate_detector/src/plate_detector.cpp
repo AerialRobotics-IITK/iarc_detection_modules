@@ -28,7 +28,7 @@ void PlateDetectorROS::init(ros::NodeHandle& nh) {
     detect_.setCannyParams(canny_lower, canny_upper, canny_ker);
     detect_.setMinArea(min_contour_area);
 
-    centre_pub_ = nh_private.advertise<util_msgs::centre>("centre_coord", 10);
+    centre_pub_ = nh_private.advertise<detector_msgs::Centre>("centre_coord", 10);
     thresh_pub_ = nh_private.advertise<sensor_msgs::Image>("thresh_img", 10);
     contour_pub_ = nh_private.advertise<sensor_msgs::Image>("contours", 10);
 }

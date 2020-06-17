@@ -5,8 +5,8 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Image.h>
 
+#include <detector_msgs/Centre.h>
 #include <plate_detector/libplate_detection.hpp>
-#include <util_msgs/centre.h>
 
 namespace iarc2020::plate_detector_ros {
 
@@ -28,7 +28,7 @@ class PlateDetectorROS {
 
     iarc2020::plate_detector::PlateDetector detect_;
 
-    util_msgs::centre centre_coord_;
+    detector_msgs::Centre centre_coord_;
 };
 
 }  // namespace iarc2020::plate_detector_ros

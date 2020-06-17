@@ -8,8 +8,20 @@ void PlatePoseEstimationROS::init(ros::NodeHandle& nh) {
 
     ros::NodeHandle nh_private("~");
 
-    glob_coord_pub_ = nh_private.advertise<util_msgs::global_coord>("estimated_coord", 10);
-    front_coord_pub_ = nh.advertise<util_msgs::global_coord>("front_coord", 10);
+    glob_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("estimated_coord", 10);
+    front_coord_pub_ = nh.advertise<detector_msgs::GlobalCoord>("front_coord", 10);
+
+    std::vector<double> temp_list;
+    nh_private.getParam("camera_matrix", temp_list);
+    pose_est_.setCamMatrix(temp_list);
+
+    temp_list.clear();
+    nh_private.getParam("cam_to_quad_rot", temp_list);
+    pose_est_.setCamToQuadMatrix(temp_list);
+
+    temp_list.clear();
+    nh_private.getParam("t_cam", temp_list);
+    pose_est_.setTCamMatrix(temp_list);
 }
 
 void PlatePoseEstimationROS::run() {
@@ -20,39 +32,27 @@ void PlatePoseEstimationROS::run() {
         return;
     }
 
-    float dist = 5.0;
-    float x_m = 160, y_m = 120;
-
-    // TODO: create a function for this
-    pose_est_.getDistance(dist);
-    pose_est_.setImgVec(x_m, y_m);  // point of the image's centre
-    pose_est_.CamToQuad();
-    pose_est_.setQuaternion(odom_);
-    pose_est_.QuadToGlob(odom_);
-    straight_vec_ = pose_est_.getGlobCoord();
-
+    // TODO: no hardcoding
+    straight_vec_ = calculateGlobCoord(160, 120, 5.0);
     front_coord_.x = straight_vec_(0);
     front_coord_.y = straight_vec_(1);
     front_coord_.z = straight_vec_(2);
     front_coord_pub_.publish(front_coord_);
 
-    dist = centre_coord_.d;
-    x_m = centre_coord_.x, y_m = centre_coord_.y;
-    pose_est_.getDistance(dist);
-    pose_est_.setImgVec(x_m, y_m);
-    pose_est_.CamToQuad();
-    pose_est_.setQuaternion(odom_);
-    pose_est_.QuadToGlob(odom_);
-    glob_coord_ = pose_est_.getGlobCoord();
-
+    glob_coord_ = calculateGlobCoord(centre_coord_.x, centre_coord_.y, centre_coord_.d);
     global_coord_.x = glob_coord_(0);
     global_coord_.y = glob_coord_(1);
     global_coord_.z = glob_coord_(2);
     glob_coord_pub_.publish(global_coord_);
 }
 
-void PlatePoseEstimationROS::centreCallback(const util_msgs::centre& msg) { centre_coord_ = msg; }
-
-void PlatePoseEstimationROS::odomCallback(const nav_msgs::Odometry& msg) { odom_ = msg; }
+Eigen::Vector3d PlatePoseEstimationROS::calculateGlobCoord(const double& img_x, const double& img_y, const double& dist) {
+    pose_est_.getDistance(dist);
+    pose_est_.setImgVec(img_x, img_y);
+    pose_est_.CamToQuad();
+    pose_est_.setQuaternion(odom_);
+    pose_est_.QuadToGlob(odom_);
+    return pose_est_.getGlobCoord();
+}
 
 }  // namespace iarc2020::plate_pose_estimation_ros

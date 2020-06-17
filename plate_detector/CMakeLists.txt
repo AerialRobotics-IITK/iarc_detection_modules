@@ -7,9 +7,6 @@ catkin_simple(ALL_DEPS_REQUIRED)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-find_package(GeographicLib REQUIRED)
-include_directories(${GeographicLib_INCLUDE_DIRS})
-
 find_package(Eigen3 REQUIRED)
 include_directories(${Eigen3_INCLUDE_DIRS})
 

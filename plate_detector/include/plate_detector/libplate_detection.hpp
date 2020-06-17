@@ -21,11 +21,11 @@ class PlateDetector {
     void setMinArea(const int& area) { min_contour_area_ = area; }
     void setCannyParams(const int& lower, const int& upper, const int& size);
 
-    void thresholdImage(cv::Mat&);
+    void thresholdImage(cv::Mat& img);
     void findGoodContours();
-    void drawContours(cv::Mat&);
-    void findFrameCentre(cv::Mat&);
-    void fitRect(cv::Mat&);
+    void drawContours(cv::Mat& img);
+    void findFrameCentre(cv::Mat& img);
+    void fitRect(cv::Mat& img);
 
     static double scale_factor;
 

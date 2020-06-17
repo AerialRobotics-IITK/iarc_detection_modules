@@ -14,7 +14,7 @@
   <build_depend>roscpp</build_depend>
 
   <depend>cv_bridge</depend>
-  <depend>util_msgs</depend>
+  <depend>detector_msgs</depend>
   <depend>eigen_conversions</depend>
   <depend>tf</depend>
   <depend>tf_conversions</depend>
