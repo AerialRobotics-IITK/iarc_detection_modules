@@ -8,6 +8,7 @@ void PlatePoseEstimationROS::init(ros::NodeHandle &nh) {
                    &PlatePoseEstimationROS::centreCallback, this);
   odom_sub_ = nh.subscribe("/firefly/ground_truth/odometry", 10,
                            &PlatePoseEstimationROS::odomCallback, this);
+  depth_sub_ = nh.subscribe("camera/camera")
 
   ros::NodeHandle nh_private("~");
 
