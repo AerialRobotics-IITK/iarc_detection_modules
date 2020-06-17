@@ -2,13 +2,12 @@
 
 namespace iarc2020::plate_detector {
 
-PlateDetector::~PlateDetector() { cv::destroyAllWindows(); }
+double PlateDetector::scale_factor = 123;  // why 123?
 
-double PlateDetector::scalef = 123;
-void PlateDetector::setCannyParams(const int& l, const int& u, const int& s) {
-    canny_param_low_ = l;
-    canny_param_upper_ = u;
-    canny_kernel_size_ = s;
+void PlateDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
+    canny_param_lower_ = lower;
+    canny_param_upper_ = upper;
+    canny_kernel_size_ = size;
 }
 
 void PlateDetector::thresholdImage(cv::Mat& img) {
@@ -25,7 +24,7 @@ void PlateDetector::thresholdImage(cv::Mat& img) {
 void PlateDetector::findGoodContours() {
     cv::Mat canny_img(thresh_img_.size(), CV_8UC1);
 
-    cv::Canny(thresh_img_, canny_img, canny_param_low_, canny_param_upper_, canny_kernel_size_);
+    cv::Canny(thresh_img_, canny_img, canny_param_lower_, canny_param_upper_, canny_kernel_size_);
 
     good_contours_.clear();
     good_contours_.shrink_to_fit();
@@ -60,7 +59,7 @@ void PlateDetector::fitRect(cv::Mat& board) {
     centre_.second = center_.y;
     distance_ = sqrt((rect_points[1].x - rect_points[0].x) * (rect_points[1].x - rect_points[0].x) +
                      (rect_points[1].y - rect_points[0].y) * (rect_points[1].y - rect_points[0].y));
-    distance_ = scalef / distance_;
+    distance_ = scale_factor / distance_;
     cv::circle(board, center_, 5, cv::Scalar(255, 0, 0));
 }
 

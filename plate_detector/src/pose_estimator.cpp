@@ -3,6 +3,7 @@
 namespace iarc2020::plate_pose_estimation_ros {
 
 void PlatePoseEstimationROS::init(ros::NodeHandle& nh) {
+    // TODO: add remaps in launch files
     centre_coord_sub_ = nh.subscribe("/firefly/plate_detector_node/centre_coord", 10, &PlatePoseEstimationROS::centreCallback, this);
     odom_sub_ = nh.subscribe("/firefly/ground_truth/odometry", 10, &PlatePoseEstimationROS::odomCallback, this);
 
@@ -19,8 +20,11 @@ void PlatePoseEstimationROS::run() {
         glob_coord_pub_.publish(global_coord_);
         return;
     }
+
     float dist = 5.0;
     float x_m = 160, y_m = 120;
+
+    // TODO: create a function for this
     pose_est_.getDistance(dist);
     pose_est_.setImgVec(x_m, y_m);  // point of the image's centre
     pose_est_.CamToQuad();
@@ -31,7 +35,6 @@ void PlatePoseEstimationROS::run() {
     front_coord_.x = straight_vec_(0);
     front_coord_.y = straight_vec_(1);
     front_coord_.z = straight_vec_(2);
-
     front_coord_pub_.publish(front_coord_);
 
     dist = centre_coord_.d;
@@ -46,7 +49,6 @@ void PlatePoseEstimationROS::run() {
     global_coord_.x = glob_coord_(0);
     global_coord_.y = glob_coord_(1);
     global_coord_.z = glob_coord_(2);
-
     glob_coord_pub_.publish(global_coord_);
 }
 

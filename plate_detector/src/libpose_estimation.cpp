@@ -3,6 +3,7 @@
 namespace iarc2020::plate_pose_estimation {
 
 PlatePoseEstimation::PlatePoseEstimation() {
+    // TODO: obtain camera parameters from topic
     cam_matrix_(0, 0) = 320.25492609007654;
     cam_matrix_(0, 1) = 0;
     cam_matrix_(0, 2) = 320.5;
@@ -13,6 +14,7 @@ PlatePoseEstimation::PlatePoseEstimation() {
     cam_matrix_(2, 1) = 0;
     cam_matrix_(2, 2) = 1.0;
 
+    // TODO: from params
     cam_to_quad_(0, 0) = 0;
     cam_to_quad_(0, 1) = 0;
     cam_to_quad_(0, 2) = 1;
@@ -27,6 +29,7 @@ PlatePoseEstimation::PlatePoseEstimation() {
     img_vec_(1) = 0;
     img_vec_(2) = 1;
 
+    // TODO: params
     t_cam_(0) = 0.0;
     t_cam_(1) = 0.0;
     t_cam_(2) = 0.02;
@@ -34,10 +37,11 @@ PlatePoseEstimation::PlatePoseEstimation() {
 void PlatePoseEstimation::getDistance(float& dist) {
     for (int i = 0; i < 3; i += 1) {
         for (int j = 0; j < 3; j += 1) {
-            if (i == j)
+            if (i == j) {
                 scale_up_(i, j) = dist;
-            else
+            } else {
                 scale_up_(i, j) = 0;
+            }
         }
     }
 }
@@ -48,9 +52,10 @@ void PlatePoseEstimation::setImgVec(float& x, float& y) {
 }
 
 void PlatePoseEstimation::setQuaternion(nav_msgs::Odometry odom) {
-    q1_ = tf::Quaternion(odom.pose.pose.orientation.x, odom.pose.pose.orientation.y, odom.pose.pose.orientation.z, odom.pose.pose.orientation.w);
-    quat_ = Eigen::Quaterniond(q1_.w(), q1_.x(), q1_.y(), q1_.z());
-    quad_to_glob_ = quat_.normalized().toRotationMatrix();
+    tf::Quaternion quat =
+        tf::Quaternion(odom.pose.pose.orientation.x, odom.pose.pose.orientation.y, odom.pose.pose.orientation.z, odom.pose.pose.orientation.w);
+    Eigen::Quaterniond eigen_quat = Eigen::Quaterniond(quat.w(), quat.x(), quat.y(), quat.z());
+    quad_to_glob_ = eigen_quat.normalized().toRotationMatrix();
 }
 
 void PlatePoseEstimation::CamToQuad() {

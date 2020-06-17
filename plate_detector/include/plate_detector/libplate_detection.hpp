@@ -10,17 +10,16 @@ namespace iarc2020::plate_detector {
 
 class PlateDetector {
     public:
-    PlateDetector(){};
-    ~PlateDetector();
+    ~PlateDetector() { cv::destroyAllWindows(); };
 
     std::pair<int, int> getCentre() { return centre_; };
+    cv::Mat getThresh() { return thresh_img_; };
+    double getDistance() { return distance_; };
 
     void setHSVMin(const int& h, const int& s, const int& v) { hsv_min_ = cv::Scalar(h, s, v); }
     void setHSVMax(const int& h, const int& s, const int& v) { hsv_max_ = cv::Scalar(h, s, v); }
-
-    void setMinArea(const int& a) { min_contour_area_ = a; }
-
-    void setCannyParams(const int&, const int&, const int&);
+    void setMinArea(const int& area) { min_contour_area_ = area; }
+    void setCannyParams(const int& lower, const int& upper, const int& size);
 
     void thresholdImage(cv::Mat&);
     void findGoodContours();
@@ -28,10 +27,7 @@ class PlateDetector {
     void findFrameCentre(cv::Mat&);
     void fitRect(cv::Mat&);
 
-    cv::Mat getThresh() { return thresh_img_; };
-
-    double getDistance() { return distance_; };
-    static double scalef;
+    static double scale_factor;
 
     private:
     std::pair<int, int> centre_;
@@ -46,7 +42,7 @@ class PlateDetector {
 
     std::vector<std::vector<cv::Point>> good_contours_;
 
-    int canny_param_low_;
+    int canny_param_lower_;
     int canny_param_upper_;
     int canny_kernel_size_;
 
@@ -54,4 +50,4 @@ class PlateDetector {
     double distance_;
 };
 
-} // namespace iarc2020::plate_detector
+}  // namespace iarc2020::plate_detector
