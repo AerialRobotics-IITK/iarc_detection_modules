@@ -1,5 +1,4 @@
-#include <iostream>
-#include <plate_detector/plate_detector.hpp>
+#include <plate_detector/libplate_detection.hpp>
 
 namespace iarc2020::plate_detector {
 

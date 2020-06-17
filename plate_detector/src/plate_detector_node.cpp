@@ -1,4 +1,4 @@
-#include <plate_detector_ros/plate_detector_ros.hpp>
+#include <plate_detector/plate_detector.hpp>
 
 using namespace iarc2020::plate_detector_ros;
 

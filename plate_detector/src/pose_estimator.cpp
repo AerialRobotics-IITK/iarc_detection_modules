@@ -1,4 +1,4 @@
-#include <plate_pose_estimation_ros/pose_estimation_ros.hpp>
+#include <plate_detector/pose_estimator.hpp>
 
 namespace iarc2020::plate_pose_estimation_ros {
 
@@ -8,7 +8,6 @@ void PlatePoseEstimationROS::init(ros::NodeHandle &nh) {
                    &PlatePoseEstimationROS::centreCallback, this);
   odom_sub_ = nh.subscribe("/firefly/ground_truth/odometry", 10,
                            &PlatePoseEstimationROS::odomCallback, this);
-  depth_sub_ = nh.subscribe("camera/camera")
 
   ros::NodeHandle nh_private("~");
 

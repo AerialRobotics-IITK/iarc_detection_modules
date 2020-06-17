@@ -1,9 +1,11 @@
+#pragma once
+
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 
-#include <plate_pose_estimation/pose_estimation.hpp>
+#include <plate_detector/libpose_estimation.hpp>
 #include <util_msgs/centre.h>
 #include <util_msgs/global_coord.h>
 

@@ -10,9 +10,6 @@
 
   <!-- Add packages as run dependencies below -->
   <run_depend>plate_detector</run_depend>
-  <run_depend>plate_detector_ros</run_depend>
-  <run_depend>plate_pose_estimation</run_depend>
-  <run_depend>plate_pose_estimation_ros</run_depend>
   <run_depend>util_msgs</run_depend>
 
   <export>

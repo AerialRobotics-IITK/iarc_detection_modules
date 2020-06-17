@@ -1,59 +1,35 @@
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
+#pragma once
 
-#include <utility>
-#include <vector>
+#include <cv_bridge/cv_bridge.h>
+#include <image_transport/image_transport.h>
+#include <ros/ros.h>
+#include <sensor_msgs/Image.h>
 
-namespace iarc2020::plate_detector {
+#include <plate_detector/libplate_detection.hpp>
+#include <util_msgs/centre.h>
 
-class PlateDetector {
+namespace iarc2020::plate_detector_ros {
+
+class PlateDetectorROS {
   public:
-    PlateDetector(){};
-    ~PlateDetector();
-
-    std::pair<int, int> getCentre() { return centre_; };
-
-    void setHSVMin(const int &h, const int &s, const int &v) {
-      hsv_min_ = cv::Scalar(h, s, v);
-    }
-    void setHSVMax(const int &h, const int &s, const int &v) {
-      hsv_max_ = cv::Scalar(h, s, v);
-    }
-
-    void setMinArea(const int &a) { min_contour_area_ = a; }
-
-    void setCannyParams(const int &, const int &, const int &);
-
-    void thresholdImage(cv::Mat &);
-    void findGoodContours();
-    void drawContours(cv::Mat &);
-    void findFrameCentre(cv::Mat &);
-    void fitRect(cv::Mat &);
-
-    cv::Mat getThresh() { return thresh_img_; };
-
-    double getDistance() { return distance_; };
-    static double scalef;
+    PlateDetectorROS(){};
+    ~PlateDetectorROS(){};
+    void init(ros::NodeHandle &nh);
+    void run();
 
   private:
-    std::pair<int, int> centre_;
+    void imageCallback(const sensor_msgs::ImageConstPtr &msg);
+    cv::Mat img_;
 
-    cv::Scalar hsv_min_;
-    cv::Scalar hsv_max_;
+    ros::Subscriber img_sub_;
 
-    cv::Mat thresh_img_;
+    ros::Publisher centre_pub_;
+    ros::Publisher thresh_pub_;
+    ros::Publisher contour_pub_;
 
-    cv::Point2f center_;
-    cv::Point2f rect_points[4];
+    iarc2020::plate_detector::PlateDetector detect_;
 
-    std::vector<std::vector<cv::Point>> good_contours_;
-
-    int canny_param_low_;
-    int canny_param_upper_;
-    int canny_kernel_size_;
-
-    double min_contour_area_;
-    double distance_;
+    util_msgs::centre centre_coord_;
 };
 
-} // namespace iarc2020::plate_detector
+} // namespace iarc2020::plate_detector_ros

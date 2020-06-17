@@ -1,3 +1,5 @@
+#pragma once
+
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
 #include <nav_msgs/Odometry.h>
