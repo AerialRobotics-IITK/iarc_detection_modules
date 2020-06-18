@@ -5,11 +5,11 @@
 #include <nav_msgs/Odometry.h>
 #include <tf/tf.h>
 
-namespace iarc2020::plate_pose_estimation {
+namespace iarc2020::pose_estimation {
 
-class PlatePoseEstimation {
+class PoseEstimator {
     public:
-    PlatePoseEstimation();
+    PoseEstimator();
 
     void getDistance(const float& dist);
     Eigen::Vector3d getGlobCoord() { return glob_coord_; };
@@ -36,4 +36,4 @@ class PlatePoseEstimation {
     Eigen::Vector3d glob_coord_;
 };
 
-}  // namespace iarc2020::plate_pose_estimation
+}  // namespace iarc2020::pose_estimation

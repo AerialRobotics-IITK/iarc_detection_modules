@@ -1,10 +1,10 @@
 #include <plate_detector/pose_estimator.hpp>
 
-namespace iarc2020::plate_pose_estimation_ros {
+namespace iarc2020::pose_estimation {
 
-void PlatePoseEstimationROS::init(ros::NodeHandle& nh) {
-    centre_coord_sub_ = nh.subscribe("centre_coord", 10, &PlatePoseEstimationROS::centreCallback, this);
-    odom_sub_ = nh.subscribe("odom", 10, &PlatePoseEstimationROS::odomCallback, this);
+void PoseEstimatorNode::init(ros::NodeHandle& nh) {
+    centre_coord_sub_ = nh.subscribe("centre_coord", 10, &PoseEstimatorNode::centreCallback, this);
+    odom_sub_ = nh.subscribe("odom", 10, &PoseEstimatorNode::odomCallback, this);
 
     ros::NodeHandle nh_private("~");
 
@@ -24,15 +24,13 @@ void PlatePoseEstimationROS::init(ros::NodeHandle& nh) {
     pose_est_.setTCamMatrix(temp_list);
 }
 
-void PlatePoseEstimationROS::run() {
-    odomdisplay();
-
+void PoseEstimatorNode::run() {
     if ((centre_coord_.x == -1) || (centre_coord_.y == -1)) {
         glob_coord_pub_.publish(global_coord_);
         return;
     }
 
-    // TODO: no hardcoding
+    // FIXME: no hardcoding
     straight_vec_ = calculateGlobCoord(160, 120, 5.0);
     front_coord_.x = straight_vec_(0);
     front_coord_.y = straight_vec_(1);
@@ -46,7 +44,7 @@ void PlatePoseEstimationROS::run() {
     glob_coord_pub_.publish(global_coord_);
 }
 
-Eigen::Vector3d PlatePoseEstimationROS::calculateGlobCoord(const double& img_x, const double& img_y, const double& dist) {
+Eigen::Vector3d PoseEstimatorNode::calculateGlobCoord(const double& img_x, const double& img_y, const double& dist) {
     pose_est_.getDistance(dist);
     pose_est_.setImgVec(img_x, img_y);
     pose_est_.CamToQuad();
@@ -55,4 +53,4 @@ Eigen::Vector3d PlatePoseEstimationROS::calculateGlobCoord(const double& img_x, 
     return pose_est_.getGlobCoord();
 }
 
-}  // namespace iarc2020::plate_pose_estimation_ros
+}  // namespace iarc2020::pose_estimation

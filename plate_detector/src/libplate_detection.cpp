@@ -1,8 +1,8 @@
 #include <plate_detector/libplate_detection.hpp>
 
-namespace iarc2020::plate_detector {
+namespace iarc2020::plate_detection {
 
-double PlateDetector::scale_factor = 123;  // why 123?
+double PlateDetector::scale_factor = 123;  // FIXME: why 123?
 
 void PlateDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
     canny_param_lower_ = lower;
@@ -65,4 +65,4 @@ void PlateDetector::fitRect(cv::Mat& board) {
 
 void PlateDetector::drawContours(cv::Mat& board) { cv::drawContours(board, good_contours_, -1, cv::Scalar(255, 255, 255), 2); }
 
-}  // namespace iarc2020::plate_detector
+}  // namespace iarc2020::plate_detection

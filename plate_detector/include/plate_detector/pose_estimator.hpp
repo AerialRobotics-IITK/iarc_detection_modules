@@ -9,9 +9,9 @@
 #include <detector_msgs/GlobalCoord.h>
 #include <plate_detector/libpose_estimation.hpp>
 
-namespace iarc2020::plate_pose_estimation_ros {
+namespace iarc2020::pose_estimation {
 
-class PlatePoseEstimationROS {
+class PoseEstimatorNode {
     public:
     void init(ros::NodeHandle& nh);
     void run();
@@ -19,15 +19,9 @@ class PlatePoseEstimationROS {
     void centreCallback(const detector_msgs::Centre& msg) { centre_coord_ = msg; };
     void odomCallback(const nav_msgs::Odometry& msg) { odom_ = msg; };
 
-    // TODO: verbosity flag
-    void odomdisplay() {
-        ROS_INFO_STREAM("x: " << odom_.pose.pose.position.x << "  y: " << odom_.pose.pose.position.y << "  z: " << odom_.pose.pose.position.z << "\n");
-    }
-
     private:
     Eigen::Vector3d calculateGlobCoord(const double& img_x, const double& img_y, const double& dist);
 
-    // TODO: rename messages
     detector_msgs::Centre centre_coord_;
     detector_msgs::GlobalCoord global_coord_;
     detector_msgs::GlobalCoord front_coord_;
@@ -39,10 +33,10 @@ class PlatePoseEstimationROS {
     ros::Subscriber centre_coord_sub_;
     ros::Subscriber odom_sub_;
 
-    iarc2020::plate_pose_estimation::PlatePoseEstimation pose_est_;
-
     ros::Publisher glob_coord_pub_;
     ros::Publisher front_coord_pub_;
+
+    PoseEstimator pose_est_;
 };
 
-}  // namespace iarc2020::plate_pose_estimation_ros
+}  // namespace iarc2020::pose_estimation

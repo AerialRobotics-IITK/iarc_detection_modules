@@ -1,12 +1,12 @@
 #include <plate_detector/plate_detector.hpp>
 
-using namespace iarc2020::plate_detector_ros;
+using namespace iarc2020::plate_detection;
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "plate_detector_node");
     ros::NodeHandle nh;
 
-    PlateDetectorROS detect;
+    PlateDetectorNode detect;
 
     detect.init(nh);
 

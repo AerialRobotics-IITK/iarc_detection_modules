@@ -1,12 +1,12 @@
 #include <plate_detector/pose_estimator.hpp>
 
-using namespace iarc2020::plate_pose_estimation_ros;
+using namespace iarc2020::pose_estimation;
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "pose_estimation_node");
     ros::NodeHandle nh;
 
-    PlatePoseEstimationROS pose_est;
+    PoseEstimatorNode pose_est;
 
     pose_est.init(nh);
 

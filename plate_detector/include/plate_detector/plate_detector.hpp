@@ -8,9 +8,9 @@
 #include <detector_msgs/Centre.h>
 #include <plate_detector/libplate_detection.hpp>
 
-namespace iarc2020::plate_detector_ros {
+namespace iarc2020::plate_detection {
 
-class PlateDetectorROS {
+class PlateDetectorNode {
     public:
     void init(ros::NodeHandle& nh);
     void run();
@@ -26,9 +26,9 @@ class PlateDetectorROS {
     ros::Publisher thresh_pub_;
     ros::Publisher contour_pub_;
 
-    iarc2020::plate_detector::PlateDetector detect_;
+    PlateDetector detect_;
 
     detector_msgs::Centre centre_coord_;
 };
 
-}  // namespace iarc2020::plate_detector_ros
+}  // namespace iarc2020::plate_detection

@@ -1,14 +1,14 @@
 #include <plate_detector/plate_detector.hpp>
 
-namespace iarc2020::plate_detector_ros {
+namespace iarc2020::plate_detection {
 
-void PlateDetectorROS::init(ros::NodeHandle& nh) {
+void PlateDetectorNode::init(ros::NodeHandle& nh) {
     int h_min, s_min, v_min;
     int h_max, s_max, v_max;
     int canny_lower, canny_upper, canny_ker;
     int min_contour_area;
 
-    img_sub_ = nh.subscribe("image_raw", 1, &PlateDetectorROS::imageCallback, this);
+    img_sub_ = nh.subscribe("image_raw", 1, &PlateDetectorNode::imageCallback, this);
 
     ros::NodeHandle nh_private("~");
 
@@ -33,7 +33,7 @@ void PlateDetectorROS::init(ros::NodeHandle& nh) {
     contour_pub_ = nh_private.advertise<sensor_msgs::Image>("contours", 10);
 }
 
-void PlateDetectorROS::run() {
+void PlateDetectorNode::run() {
     if (img_.empty()) { return; };
 
     detect_.thresholdImage(img_);
@@ -56,7 +56,7 @@ void PlateDetectorROS::run() {
     centre_pub_.publish(centre_coord_);
 }
 
-void PlateDetectorROS::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
+void PlateDetectorNode::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
     cv_bridge::CvImagePtr cv_ptr_;
 
     try {
@@ -69,4 +69,4 @@ void PlateDetectorROS::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
     img_ = cv_ptr_->image;
 }
 
-}  // namespace iarc2020::plate_detector_ros
+}  // namespace iarc2020::plate_detection

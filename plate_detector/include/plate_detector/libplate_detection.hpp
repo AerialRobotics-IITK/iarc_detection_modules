@@ -6,12 +6,10 @@
 #include <utility>
 #include <vector>
 
-namespace iarc2020::plate_detector {
+namespace iarc2020::plate_detection {
 
 class PlateDetector {
     public:
-    ~PlateDetector() { cv::destroyAllWindows(); };
-
     std::pair<int, int> getCentre() { return centre_; };
     cv::Mat getThresh() { return thresh_img_; };
     double getDistance() { return distance_; };
@@ -50,4 +48,4 @@ class PlateDetector {
     double distance_;
 };
 
-}  // namespace iarc2020::plate_detector
+}  // namespace iarc2020::plate_detection
