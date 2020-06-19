@@ -11,7 +11,7 @@
             <rosparam file="$(find plate_detector)/config/param.yaml"/>
             <remap from="image_raw" to="camera_front/image_raw"/>
         </node>
-        <node pkg="plate_detector" type="pose_estimator_node" name="pose_estimator_node">
+        <node pkg="plate_detector" type="pose_estimator_node" name="pose_estimator_node" output="screen">
             <rosparam file="$(find plate_detector)/config/param.yaml"/>
             <remap from="odom" to="ground_truth/odometry"/>
             <remap from="centre_coord" to="plate_detector_node/centre_coord"/>

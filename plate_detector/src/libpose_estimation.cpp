@@ -15,8 +15,6 @@ void PoseEstimator::init() {
 
     img_vec_ = Eigen::Vector3d(0, 0, 1);
     t_cam_ = Eigen::Vector3d(0, 0, 0.02);
-    inv_cam_matrix_ = cam_matrix_.inverse();
-    if (verbose_) ROS_INFO_STREAM("inv_cam_matrix: \n" << inv_cam_matrix_);
 }
 
 void PoseEstimator::getDistance(const float& dist) {
@@ -30,7 +28,6 @@ void PoseEstimator::getDistance(const float& dist) {
 void PoseEstimator::setImgVec(const float& x, const float& y) {
     img_vec_(0) = x;
     img_vec_(1) = y;
-    if (verbose_) ROS_INFO_STREAM("img vec: \n" << img_vec_);
 }
 
 void PoseEstimator::setQuaternion(const nav_msgs::Odometry& odom) {
@@ -40,14 +37,7 @@ void PoseEstimator::setQuaternion(const nav_msgs::Odometry& odom) {
     quad_to_glob_ = eigen_quat.normalized().toRotationMatrix();
 }
 
-void PoseEstimator::CamToQuad() {
-    if (verbose_) {
-        ROS_INFO_STREAM("dist: " << scale_up_(0, 0) << "\n");
-        ROS_INFO_STREAM("c2q: \n" << cam_to_quad_);
-        ROS_INFO_STREAM("\n tcam: \n" << t_cam_);
-    }
-    quad_coord_ = cam_to_quad_ * scale_up_ * inv_cam_matrix_ * img_vec_ + t_cam_;
-}
+void PoseEstimator::CamToQuad() { quad_coord_ = cam_to_quad_ * scale_up_ * cam_matrix_.inverse() * img_vec_ + t_cam_; }
 
 void PoseEstimator::QuadToGlob(const nav_msgs::Odometry& odom) {
     glob_coord_ = quad_to_glob_ * quad_coord_;

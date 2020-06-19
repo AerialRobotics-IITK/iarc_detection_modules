@@ -3,7 +3,7 @@
 using namespace iarc2020::pose_estimation;
 
 int main(int argc, char** argv) {
-    ros::init(argc, argv, "pose_estimation_node");
+    ros::init(argc, argv, "pose_estimator_node");
 
     ros::NodeHandle nh;
     ros::NodeHandle nh_private("~");

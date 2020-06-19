@@ -42,7 +42,6 @@ void PoseEstimatorNode::run() {
     front_coord_pub_.publish(front_coord_);
 
     glob_coord_ = calculateGlobCoord(centre_coord_.x, centre_coord_.y, centre_coord_.d);
-    ROS_INFO_STREAM("Glob: \n" glob_coord_);
     global_coord_.x = glob_coord_(0);
     global_coord_.y = glob_coord_(1);
     global_coord_.z = glob_coord_(2);
