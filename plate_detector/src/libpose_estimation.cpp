@@ -2,7 +2,7 @@
 
 namespace iarc2020::pose_estimation {
 
-PoseEstimator::PoseEstimator() {
+void PoseEstimator::init() {
     // clang-format off
     cam_matrix_ << 320.25492609007654, 0, 320.5,
                    0, 320.25492609007654, 240.5,
@@ -15,6 +15,8 @@ PoseEstimator::PoseEstimator() {
 
     img_vec_ = Eigen::Vector3d(0, 0, 1);
     t_cam_ = Eigen::Vector3d(0, 0, 0.02);
+    inv_cam_matrix_ = cam_matrix_.inverse();
+    if (verbose_) ROS_INFO_STREAM("inv_cam_matrix: \n" << inv_cam_matrix_);
 }
 
 void PoseEstimator::getDistance(const float& dist) {
@@ -28,19 +30,23 @@ void PoseEstimator::getDistance(const float& dist) {
 void PoseEstimator::setImgVec(const float& x, const float& y) {
     img_vec_(0) = x;
     img_vec_(1) = y;
+    if (verbose_) ROS_INFO_STREAM("img vec: \n" << img_vec_);
 }
 
 void PoseEstimator::setQuaternion(const nav_msgs::Odometry& odom) {
-    tf::Quaternion quat =
-        tf::Quaternion(odom.pose.pose.orientation.x, odom.pose.pose.orientation.y, odom.pose.pose.orientation.z, odom.pose.pose.orientation.w);
+    geometry_msgs::Quaternion odom_quat = odom.pose.pose.orientation;
+    tf::Quaternion quat = tf::Quaternion(odom_quat.x, odom_quat.y, odom_quat.z, odom_quat.w);
     Eigen::Quaterniond eigen_quat = Eigen::Quaterniond(quat.w(), quat.x(), quat.y(), quat.z());
     quad_to_glob_ = eigen_quat.normalized().toRotationMatrix();
 }
 
 void PoseEstimator::CamToQuad() {
-    ROS_INFO_STREAM(scale_up_(0, 0) << "\n");
-    Eigen::Matrix3d inv_cam_matrix = cam_matrix_.inverse();
-    quad_coord_ = cam_to_quad_ * scale_up_ * inv_cam_matrix * img_vec_ + t_cam_;
+    if (verbose_) {
+        ROS_INFO_STREAM("dist: " << scale_up_(0, 0) << "\n");
+        ROS_INFO_STREAM("c2q: \n" << cam_to_quad_);
+        ROS_INFO_STREAM("\n tcam: \n" << t_cam_);
+    }
+    quad_coord_ = cam_to_quad_ * scale_up_ * inv_cam_matrix_ * img_vec_ + t_cam_;
 }
 
 void PoseEstimator::QuadToGlob(const nav_msgs::Odometry& odom) {

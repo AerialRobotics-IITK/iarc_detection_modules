@@ -13,7 +13,7 @@ namespace iarc2020::pose_estimation {
 
 class PoseEstimatorNode {
     public:
-    void init(ros::NodeHandle& nh);
+    void init(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
     void run();
 
     void centreCallback(const detector_msgs::Centre& msg) { centre_coord_ = msg; };

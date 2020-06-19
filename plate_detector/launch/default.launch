@@ -2,16 +2,17 @@
 <launch>
     <arg name="mav_name" default="firefly"/>
 
-    <include file="$(find iarc_simulation_tools)/launch/default.launch">
+    <!-- <include file="$(find iarc_simulation_tools)/launch/default.launch">
         <arg name="mav_name" value="$(arg mav_name)"/>
-    </include>
+    </include> -->
 
     <group ns="$(arg mav_name)">
         <node pkg="plate_detector" type="plate_detector_node" name="plate_detector_node" output="screen">
             <rosparam file="$(find plate_detector)/config/param.yaml"/>
             <remap from="image_raw" to="camera_front/image_raw"/>
         </node>
-        <node pkg="plate_detector" type="pose_estimation_node" name="pose_estimation_node">
+        <node pkg="plate_detector" type="pose_estimator_node" name="pose_estimator_node">
+            <rosparam file="$(find plate_detector)/config/param.yaml"/>
             <remap from="odom" to="ground_truth/odometry"/>
             <remap from="centre_coord" to="plate_detector_node/centre_coord"/>
         </node>

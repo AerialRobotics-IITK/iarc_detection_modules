@@ -2,14 +2,14 @@
 
 namespace iarc2020::pose_estimation {
 
-void PoseEstimatorNode::init(ros::NodeHandle& nh) {
+void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     centre_coord_sub_ = nh.subscribe("centre_coord", 10, &PoseEstimatorNode::centreCallback, this);
     odom_sub_ = nh.subscribe("odom", 10, &PoseEstimatorNode::odomCallback, this);
 
-    ros::NodeHandle nh_private("~");
-
     glob_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("estimated_coord", 10);
     front_coord_pub_ = nh.advertise<detector_msgs::GlobalCoord>("front_coord", 10);
+
+    pose_est_.init();
 
     std::vector<double> temp_list;
     nh_private.getParam("camera_matrix", temp_list);
@@ -22,6 +22,10 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh) {
     temp_list.clear();
     nh_private.getParam("t_cam", temp_list);
     pose_est_.setTCamMatrix(temp_list);
+
+    bool verbose_flag = true;
+    nh_private.getParam("verbose", verbose_flag);
+    pose_est_.setVerbosity(verbose_flag);
 }
 
 void PoseEstimatorNode::run() {
@@ -38,6 +42,7 @@ void PoseEstimatorNode::run() {
     front_coord_pub_.publish(front_coord_);
 
     glob_coord_ = calculateGlobCoord(centre_coord_.x, centre_coord_.y, centre_coord_.d);
+    ROS_INFO_STREAM("Glob: \n" glob_coord_);
     global_coord_.x = glob_coord_(0);
     global_coord_.y = glob_coord_(1);
     global_coord_.z = glob_coord_(2);

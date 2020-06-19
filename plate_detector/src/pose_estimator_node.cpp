@@ -4,11 +4,13 @@ using namespace iarc2020::pose_estimation;
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "pose_estimation_node");
+
     ros::NodeHandle nh;
+    ros::NodeHandle nh_private("~");
 
     PoseEstimatorNode pose_est;
 
-    pose_est.init(nh);
+    pose_est.init(nh, nh_private);
 
     ros::Rate loop_rate(10);
 
