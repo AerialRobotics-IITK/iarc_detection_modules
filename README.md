@@ -2,7 +2,7 @@
 Detection Packages for IARC Mission 9  
 Results of using SURF/SIFT as feature detectors   
 Conclusions:-  
-1)SURF is better since it takes less time an more good matches  
+1)SURF is better since it takes less time and more good matches  
 2)The best distance at which feature detection should be performed is at(x,y,z) =(5,1,1.8)(The text is actual at (5,0.7,1.8))  
 SURF   
 |Index     |No of Good matches    |Descriptor size   |time_taken(s)        |(x,y z)m in world frame|
