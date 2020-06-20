@@ -2,7 +2,7 @@
 
 namespace iarc2020::plate_detection {
 
-double PlateDetector::scale_factor = 123;  // FIXME: why 123?
+double PlateDetector::scale_factor = 117;  // FIXME: why 123?
 
 void PlateDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
     canny_param_lower_ = lower;

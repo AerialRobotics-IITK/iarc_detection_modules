@@ -4,8 +4,8 @@ namespace iarc2020::pose_estimation {
 
 void PoseEstimator::init() {
     // clang-format off
-    cam_matrix_ << 320.25492609007654, 0, 320.5,
-                   0, 320.25492609007654, 240.5,
+    cam_matrix_ << 415.21159208661874, 0, 424.5,
+                   0, 415.21159208661874, 240.5,
                    0, 0, 1;
 
     cam_to_quad_ << 0, 0, 1,
