@@ -14,8 +14,8 @@ class PoseEstimator {
     void getDistance(const float& dist);
     Eigen::Vector3d getGlobCoord() { return glob_coord_; };
 
-    void setCamToQuadMatrix(const std::vector<double>& mat) { cam_to_quad_ = Eigen::Matrix3d(mat.data()); };
-    void setCamMatrix(const std::vector<double>& mat) { cam_matrix_ = Eigen::Matrix3d(mat.data()); };
+    void setCamToQuadMatrix(const std::vector<double>& mat) { cam_to_quad_ = Eigen::Matrix3d(mat.data()).transpose(); };
+    void setCamMatrix(const std::vector<double>& mat) { cam_matrix_ = Eigen::Matrix3d(mat.data()).transpose(); };
     void setTCamMatrix(const std::vector<double>& mat) { t_cam_ = Eigen::Vector3d(mat.data()); };
     void setVerbosity(const bool& flag) { verbose_ = flag; }
 
