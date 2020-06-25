@@ -2,9 +2,9 @@
 <launch>
     <arg name="mav_name" default="firefly"/>
 
-    <!-- <include file="$(find iarc_simulation_tools)/launch/default.launch">
+    <include file="$(find iarc_simulation_tools)/launch/default.launch">
         <arg name="mav_name" value="$(arg mav_name)"/>
-    </include> -->
+    </include>
 
     <group ns="$(arg mav_name)">
         <node pkg="plate_detector" type="plate_detector_node" name="plate_detector_node" output="screen">

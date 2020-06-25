@@ -10,7 +10,7 @@ void LedDetectorNode::init(ros::NodeHandle& nh) {
     int h_max_green, s_max_green, v_max_green;
     
     int canny_lower, canny_upper, canny_ker;
-    int min_contour_area;
+    int max_contour_area;
 
     img_sub_ = nh.subscribe("image_raw", 1, &LedDetectorNode::imageCallback, this);
 
@@ -33,7 +33,7 @@ void LedDetectorNode::init(ros::NodeHandle& nh) {
     nh_private.getParam("canny_lower", canny_lower);
     nh_private.getParam("canny_upper", canny_upper);
     nh_private.getParam("canny_ker", canny_ker);
-    nh_private.getParam("min_contour_area", min_contour_area);
+    nh_private.getParam("max_contour_area", max_contour_area);
 
     detect_.setHSVMinRed(h_min_red, s_min_red, v_min_red);
     detect_.setHSVMaxRed(h_max_red, s_max_red, v_max_red);
@@ -41,7 +41,7 @@ void LedDetectorNode::init(ros::NodeHandle& nh) {
     detect_.setHSVMaxGreen(h_max_green, s_max_green, v_max_green);
 
     detect_.setCannyParams(canny_lower, canny_upper, canny_ker);
-    detect_.setMinArea(min_contour_area);
+    detect_.setMaxArea(max_contour_area);
 
     centre_pub_red_ = nh_private.advertise<detector_msgs::Centre>("led_centre_coord_red", 10);
     centre_pub_green_ = nh_private.advertise<detector_msgs::Centre>("led_centre_coord_green", 10);

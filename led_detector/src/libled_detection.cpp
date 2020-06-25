@@ -31,13 +31,20 @@ void LedDetector::findGoodContours() {
     cv::findContours(thresh_img_red_, contours_red_, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
     cv::findContours(thresh_img_green_, contours_green_, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
 
+    centre_red_.x = -1;
+    centre_red_.y = -1;
+    centre_green_.x = -1;
+    centre_green_.y = -1;
+
     float temp_radius;
 
     if(!contours_red_.empty()) {
-        cv::minEnclosingCircle(contours_red_[0], centre_red_, temp_radius);
+        if (cv::contourArea(contours_red_[0]) < max_contour_area_) { cv::minEnclosingCircle(contours_red_[0], centre_red_, temp_radius); }
+        contours_red_.clear();
     }
     if(!contours_green_.empty()) {
-        cv::minEnclosingCircle(contours_green_[0], centre_green_, temp_radius);
+        if (cv::contourArea(contours_green_[0]) < max_contour_area_) { cv::minEnclosingCircle(contours_green_[0], centre_green_, temp_radius); }
+        contours_red_.clear();
     }
 }
 

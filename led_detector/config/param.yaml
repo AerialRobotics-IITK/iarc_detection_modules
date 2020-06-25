@@ -1,8 +1,8 @@
 h_min_red: 0      #red:0 
 s_min_red: 0      #red:0
-v_min_red: 0      #red:0 
+v_min_red: 50     #red:50 
 h_max_red: 32     #red:32
-s_max_red: 255    #red:255
+s_max_red: 50     #red:50
 v_max_red: 255    #red:255
 
 h_min_green: 120  #green:120
@@ -15,7 +15,7 @@ v_max_green: 255  #green:255
 canny_lower: 200  #canny params
 canny_upper: 300
 canny_ker: 3
-min_contour_area: 500
+max_contour_area: 500
 
 t_cam: [0, 0, 0.02]
 cam_to_quad_rot: [0,0,1,-1,0,0,0,-1,0]

@@ -22,7 +22,7 @@ class LedDetector {
     void setHSVMinGreen(const int& h, const int& s, const int& v) { hsv_min_green_ = cv::Scalar(h, s, v); }
     void setHSVMaxGreen(const int& h, const int& s, const int& v) { hsv_max_green_ = cv::Scalar(h, s, v); }
 
-    void setMinArea(const int& area) { min_contour_area_ = area; }
+    void setMaxArea(const int& area) { max_contour_area_ = area; }
     void setCannyParams(const int& lower, const int& upper, const int& size);
 
     void thresholdImage(cv::Mat& img);
@@ -52,7 +52,7 @@ class LedDetector {
     int canny_param_upper_;
     int canny_kernel_size_;
 
-    double min_contour_area_;
+    double max_contour_area_;
     double distance_;
 };
 
