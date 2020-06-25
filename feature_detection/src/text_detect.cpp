@@ -24,7 +24,13 @@ namespace ariitk::TextDetect {
                     cv::IMREAD_GRAYSCALE );
     if(src_.empty())ROS_ERROR("couldn't read the image");
     //computing descriptors for the train image only once
+    time1=ros::Time::now().toSec();;
     detector_->detectAndCompute( src_, cv::noArray(), keypoints1_, descriptors1_ );
+    time2=ros::Time::now().toSec();
+    row1=descriptors1_.rows;
+    col1=descriptors1_.cols;
+    ROS_INFO("descriptor1 size:(%d,%d)",row1,col1);
+    ROS_INFO("time taken for input image:%lf",(time2-time1));
  }
  void TextDetect::imageCb(const sensor_msgs::ImageConstPtr& msg) {
     cv_bridge::CvImagePtr cv_ptr;
@@ -58,16 +64,19 @@ namespace ariitk::TextDetect {
         cv::Mat WhiteTextBox = frame_gray(r);
 
         cv::Mat text_resize;cv::Size size(640,480);
-        cv::resize(WhiteTextBox,text_resize,size,cv::INTER_AREA);
+        cv::resize(WhiteTextBox,text_resize,size);
         std::vector<cv::KeyPoint> keypoints2;
         cv::Mat descriptors2;
-
+        time1=ros::Time::now().toSec();
         detector_->detectAndCompute(text_resize, cv::noArray(), keypoints2, descriptors2 );
-        
+        row2=descriptors2.rows;
+        col2=descriptors2.cols;
+        ROS_INFO("descriptor2 size:(%d,%d)",row2,col2);
         cv::drawKeypoints(text_resize, keypoints2, surf_);
 
         std::vector< std::vector<cv::DMatch> > knn_matches;
-        matcher_.knnMatch( descriptors1_, descriptors2, knn_matches, 2 );
+        if(col2!=col1)break;
+        matcher_->knnMatch( descriptors1_, descriptors2, knn_matches, 2 );
         const float ratio_thresh = 0.8f;
         std::vector<cv::DMatch> good_matches;
         for (size_t i = 0; i < knn_matches.size(); i++)
@@ -77,16 +86,19 @@ namespace ariitk::TextDetect {
                 good_matches.push_back(knn_matches[i][0]);
             }
         }
+        ROS_INFO("No of good matches %d",int(good_matches.size()));
+        time2=ros::Time::now().toSec();
+        ROS_INFO("time taken for computing and matching test image: %lf",(time2-time1));
         cv::drawMatches( src_, keypoints1_, text_resize, keypoints2, good_matches, img_matches_, cv::Scalar::all(-1),
         cv::Scalar::all(-1), std::vector<char>() );
 
-        cv::imwrite("text_box_surf_resized.jpg",surf_);
-        cv::waitKey(10);
-        cv::imwrite("text_box_match_resized.jpg",img_matches_);
+        cv::imwrite("text_box_orb_resized.jpg",surf_);
+        //cv::waitKey(10);
+        cv::imwrite("text_box_ORB_match_resized.jpg",img_matches_);
         cv_bridge::CvImage white_text_box;
         white_text_box.encoding = sensor_msgs::image_encodings::MONO8;
         white_text_box.header.stamp = ros::Time::now();
-        white_text_box.image = WhiteTextBox;
+        white_text_box.image = text_resize;
         white_text_box_pub_.publish(white_text_box.toImageMsg());
         ROS_INFO("WhiteTextBox Detected");
     }
@@ -110,6 +122,5 @@ namespace ariitk::TextDetect {
     surf_image_match.header.stamp = ros::Time::now();
     surf_image_match.image =  img_matches_;
     surf_image_match_pub_.publish(surf_image_match.toImageMsg());
-    ROS_INFO("feature_found and matched");
  }
 }// namespace ariitk::TextDetect
