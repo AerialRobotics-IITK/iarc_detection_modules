@@ -2,11 +2,7 @@
 
 #include "opencv2/core.hpp"
 #include "opencv2/features2d.hpp"
-<<<<<<< HEAD
 //#include "opencv2/xfeatures2d.hpp"
-=======
-#include "opencv2/highgui.hpp"
->>>>>>> 54a3e08efbb4aaba47096542e3e2b57243062432
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/xfeatures2d.hpp"
 #include <cv_bridge/cv_bridge.h>
