@@ -1,9 +1,9 @@
 # iarc_detection_modules
 Detection Packages for IARC Mission 9   
-Results of using SURF/SIFT as feature detectors   
+Results of using SURF/SIFT/ORB as feature detectors   
 Conclusions:-  
-1)SURF is better since it takes less time and more good matches  
-2)The best distance at which feature detection should be performed is at(x,y,z) =(5,1,1.8)(The text is actual at (5,0.7,1.8))   
+1)ORB give best results as it takes less time and gives more number of good matches at the same time.   
+2)The best match is at (5,0.8,1.8)(where the text is actually at (5,0.7,1.8)).  
 3)After y=2m,the text box is not detected well.  
 SURF   
 |Index     |No of Good matches    |Descriptor size   |time_taken(s)        |(x,y z)m in world frame|
@@ -19,3 +19,12 @@ SIFT
 |2         |12                    |(95,128)          |0.055-0.070          |(5,1.5,1.8) 
 |3         |12                    |(127,128)         |0.050-0.070          |(5,1,1.8)
 |4         |12                    |(168,128)         |0.045-0.070          |(5,0.8,1.8)
+
+ORB  
+|Index     |No of Good matches    |Descriptor size   |time_taken(s)        |(x,y z)m in world frame|
+|----------|----------------------|------------------|---------------------|-----------------------|
+|1         |5                     |(11,32)           |0.004-0.009          |(5,2,1.8)
+|2         |39                    |(300,32)          |0.005-0.012          |(5,1.5,1.8) 
+|3         |72                    |(499,32)          |0.010-0.013          |(5,1,1.8)
+|4         |94                    |(500,32)          |0.010-0.016          |(5,0.8,1.8)
+
