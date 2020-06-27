@@ -7,7 +7,7 @@ v_max: 200        #80
 canny_lower: 200  #canny params
 canny_upper: 300
 canny_ker: 3
-min_contour_area: 500
+min_contour_area: 1200
 
 t_cam: [0, 0, 0.02]
 cam_to_quad_rot: [0,0,1,-1,0,0,0,-1,0]
