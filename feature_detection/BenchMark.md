@@ -1,6 +1,6 @@
 # iarc_detection_modules
 Detection Packages for IARC Mission 9   
-Results of using SURF/SIFT/ORB as feature detectors and BRUTEFORCE/ORB_FLANN as matchers    
+Results of using SURF/SIFT/ORB as feature detectors and BRUTEFORCE/FLANN as matchers    
 Conclusions:-  
 1)ORB with BRUTEFORCE matcher give best results with as it takes less time and gives more number of good matches at the same time.   
 2)The best match is at (5,0.8,1.8)(where the text is actually at (5,0.7,1.8)).  
