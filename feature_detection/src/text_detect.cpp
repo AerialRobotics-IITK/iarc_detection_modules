@@ -47,13 +47,13 @@ namespace ariitk::TextDetect
       {
          ROS_ERROR("cv_bridge exception: %s", e.what());
       }
-      cv::Mat frame, frame_gray, test_image;
+      cv::Mat frame, frame_gray;
       frame = cv_ptr->image;
       ROS_ASSERT(frame.empty() != true);
-      test_image = findWhiteTextBox(frame);
+      findWhiteTextBox(frame);
    }
 
-   cv::Mat TextDetect::findWhiteTextBox(cv::Mat &frame)
+   void TextDetect::findWhiteTextBox(cv::Mat &frame)
    {
       cv::Mat frame_gray;
       cv::cvtColor(frame, frame_gray, CV_BGR2GRAY);
@@ -63,17 +63,16 @@ namespace ariitk::TextDetect
       cv::Mat WhiteTextBox, drawing = cv::Mat::zeros(frame.size(), CV_8UC3);
       cv::findContours(processed_frame_, list_contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
       std::vector<std::vector<cv::Point>> hull(list_contours.size());
+
       for (int i = 0; i < list_contours.size(); i++)
       {
+
          cv::convexHull(cv::Mat(list_contours[i]), hull[i]);
+
          if (cv::contourArea(hull[i]) < 50)
             continue;
          cv::drawContours(drawing, hull, i, cv::Scalar(255, 0, 0), 1, 8);
-         /*detected_box.encoding = sensor_msgs::image_encodings::BGR8;
-         detected_box.header.stamp = ros::Time::now();
-         detected_box.image = drawing;
-         detected_box_pub_.publish(detected_box.toImageMsg());*/
-         detected_box_pub_.publish(cv_bridge::CvImage(std_msgs::Header(), "bgr8",drawing).toImageMsg());
+         detected_box_pub_.publish(cv_bridge::CvImage(std_msgs::Header(), "bgr8", drawing).toImageMsg());
          cv::Rect r(cv::boundingRect(hull[i]));
          cv::Mat WhiteTextBox = frame_gray(r);
 
@@ -84,15 +83,38 @@ namespace ariitk::TextDetect
          cv::Mat descriptors2;
          time1_ = ros::Time::now().toSec();
          detector_->detectAndCompute(text_resize, cv::noArray(), keypoints2, descriptors2);
+
          row2_ = descriptors2.rows;
          col2_ = descriptors2.cols;
          ROS_INFO("descriptor2 size:(%d,%d)", row2_, col2_);
          cv::drawKeypoints(text_resize, keypoints2, surf_);
-
          std::vector<std::vector<cv::DMatch>> knn_matches;
          if (col2_ != col1_)
             break;
+         if (descriptors1_.empty())
+         {
+            ROS_INFO("MatchFinder 1st descriptor empty");
+            break;
+         }
+         if (descriptors2.empty())
+         {
+            ROS_INFO("MatchFinder  2nd descriptor empty");
+            break;
+         }
+         ROS_INFO("yo");
+         if (descriptors1_.type() != CV_32F)
+         {
+            descriptors1_.convertTo(descriptors1_, CV_32F);
+         }
+
+         if (descriptors2.type() != CV_32F)
+         {
+            descriptors2.convertTo(descriptors2, CV_32F);
+         }
+         if (keypoints1_.size() < 2 || keypoints2.size() < 2)
+            break;
          matcher_.knnMatch(descriptors1_, descriptors2, knn_matches, 2);
+         ROS_INFO("yo1");
          const float ratio_thresh = 0.8f;
          std::vector<cv::DMatch> good_matches;
          for (size_t i = 0; i < knn_matches.size(); i++)
@@ -109,41 +131,13 @@ namespace ariitk::TextDetect
                          cv::Scalar::all(-1), std::vector<char>());
 
          cv::imwrite("text_box_orb_resized.jpg", surf_);
-         //cv::waitKey(10);
          cv::imwrite("text_box_ORB_match_resized.jpg", img_matches_);
-         /*cv_bridge::CvImage white_text_box;
-         white_text_box.encoding = sensor_msgs::image_encodings::MONO8;
-         white_text_box.header.stamp = ros::Time::now();
-         white_text_box.image = text_resize;
-         white_text_box_pub_.publish(white_text_box.toImageMsg());
-         ROS_INFO("WhiteTextBox Detected");*/
          white_text_box_pub_.publish(cv_bridge::CvImage(std_msgs::Header(), "mono8", text_resize).toImageMsg());
          ROS_INFO("WhiteTextBox Detected");
       }
-      /*cv_bridge::CvImage white_text_box;
-      white_text_box.encoding = sensor_msgs::image_encodings::MONO8;
-      white_text_box.header.stamp = ros::Time::now();
-      white_text_box.image = WhiteTextBox;*/
    }
    void TextDetect::run()
    {
-      /*cv_bridge::CvImage preprocessed_img;
-      preprocessed_img.encoding = sensor_msgs::image_encodings::MONO8;
-      preprocessed_img.header.stamp = ros::Time::now();
-      preprocessed_img.image = processed_frame_;
-      image_pub_preprocess_.publish(preprocessed_img.toImageMsg());
-
-      cv_bridge::CvImage surf_image;
-      surf_image.encoding = sensor_msgs::image_encodings::BGR8;
-      surf_image.header.stamp = ros::Time::now();
-      surf_image.image = surf_;
-      surf_image_pub_.publish(surf_image.toImageMsg());
-
-      cv_bridge::CvImage surf_image_match;
-      surf_image_match.encoding = sensor_msgs::image_encodings::BGR8;
-      surf_image_match.header.stamp = ros::Time::now();
-      surf_image_match.image = img_matches_;
-      surf_image_match_pub_.publish(surf_image_match.toImageMsg());*/
       image_pub_preprocess_.publish(cv_bridge::CvImage(std_msgs::Header(), "mono8", processed_frame_).toImageMsg());
       surf_image_pub_.publish(cv_bridge::CvImage(std_msgs::Header(), "bgr8", surf_).toImageMsg());
       surf_image_match_pub_.publish(cv_bridge::CvImage(std_msgs::Header(), "bgr8", img_matches_).toImageMsg());

@@ -4,7 +4,6 @@
 #include "opencv2/features2d.hpp"
 //#include "opencv2/xfeatures2d.hpp"
 #include "opencv2/imgcodecs.hpp"
-//#include "opencv2/xfeatures2d.hpp"
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
@@ -31,6 +30,7 @@ namespace ariitk::TextDetect
     std::string workspace_path_image_;
     //cv::Ptr<cv::BFMatcher> matcher_ = cv::BFMatcher::create(cv::NORM_HAMMING);
     cv::FlannBasedMatcher matcher_= cv::FlannBasedMatcher(cv::makePtr<cv::flann::KDTreeIndexParams>(5));
+    //cv::FlannBasedMatcher matcher_ = cv::FlannBasedMatcher(cv::makePtr<cv::flann::LshIndexParams>(20, 10, 2));
     double time1_, time2_;
     int row1_, row2_, col1_, col2_;
 
@@ -38,7 +38,7 @@ namespace ariitk::TextDetect
     void init(ros::NodeHandle &nh, ros::NodeHandle &nh_private);
     void run();
     cv::Mat preprocess(cv::Mat &img);
-    cv::Mat findWhiteTextBox(cv::Mat &frame);
+    void findWhiteTextBox(cv::Mat &frame);
   };
 
 } // namespace ariitk::TextDetect
