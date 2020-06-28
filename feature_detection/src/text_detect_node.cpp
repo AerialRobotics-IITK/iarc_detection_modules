@@ -2,7 +2,8 @@
 
 using namespace ariitk::TextDetect;
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   ros::init(argc, argv, "text_detect_node");
   ros::NodeHandle nh;
   ros::NodeHandle nh_private("~");
@@ -13,7 +14,8 @@ int main(int argc, char **argv) {
 
   ros::Rate loopRate(2);
 
-  while (ros::ok()) {
+  while (ros::ok())
+  {
     ros::spinOnce();
     detect.run();
     loopRate.sleep();
