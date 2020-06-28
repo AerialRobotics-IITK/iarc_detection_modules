@@ -5,6 +5,7 @@
     
 
 <node pkg="feature_detection" type="text_detect_node" name="text_detect_node" output="screen">
+  <remap from="image_raw" to="/firefly/camera_front/image_raw" />
   <rosparam file="$(find feature_detection)/config/text_detect.yaml" />
 </node>
 
