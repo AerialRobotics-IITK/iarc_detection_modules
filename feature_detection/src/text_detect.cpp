@@ -101,7 +101,6 @@ namespace ariitk::TextDetect
             ROS_INFO("MatchFinder  2nd descriptor empty");
             break;
          }
-         ROS_INFO("yo");
          if (descriptors1_.type() != CV_32F)
          {
             descriptors1_.convertTo(descriptors1_, CV_32F);
@@ -114,7 +113,6 @@ namespace ariitk::TextDetect
          if (keypoints1_.size() < 2 || keypoints2.size() < 2)
             break;
          matcher_.knnMatch(descriptors1_, descriptors2, knn_matches, 2);
-         ROS_INFO("yo1");
          const float ratio_thresh = 0.8f;
          std::vector<cv::DMatch> good_matches;
          for (size_t i = 0; i < knn_matches.size(); i++)
