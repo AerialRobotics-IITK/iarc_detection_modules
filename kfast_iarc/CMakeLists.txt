@@ -25,6 +25,9 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Ofast -std=gnu++17 -fomit-frame-pointer -mavx2 -march=native -mfma -flto -funroll-all-loops -fpeel-loops -ftracer -ftree-vectorize")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Ofast -std=c11 -fomit-frame-pointer -mavx2 -march=native -mfma -flto -funroll-all-loops -fpeel-loops -ftracer -ftree-vectorize")
+
 add_executable(kfast_iarc_node src/kfast_iarc_node.cpp)
 target_link_libraries(kfast_iarc_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} opencv_features2d)
 
