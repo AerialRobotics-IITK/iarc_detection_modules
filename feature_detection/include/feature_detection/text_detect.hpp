@@ -31,14 +31,16 @@ class TextDetect {
     std::vector<cv::KeyPoint> keypoints1_;
     void imageCb(const sensor_msgs::ImageConstPtr& msg);
 
-    // cv::Ptr<cv::xfeatures2d::SIFT> detector_ = cv::xfeatures2d::SIFT::create();
-    cv::Ptr<cv::ORB> detector_ = cv::ORB::create();
+    /* Descriptors supported. Uncomment only one. */
+    cv::Ptr<cv::ORB> detector_ = cv::ORB::create();  // ORB
+    // cv::Ptr<cv::xfeatures2d::SIFT> detector_ = cv::xfeatures2d::SIFT::create(); // SIFT
+
+    /* Available matchers. Uncomment only one. */
+    cv::FlannBasedMatcher matcher_ = cv::FlannBasedMatcher(cv::makePtr<cv::flann::KDTreeIndexParams>(5));  // Recommended
+    // cv::FlannBasedMatcher matcher_ = cv::FlannBasedMatcher(cv::makePtr<cv::flann::LshIndexParams>(20, 10, 2)); // LSH poorer than KDTree for ORB
+    // cv::Ptr<cv::BFMatcher> matcher_ = cv::BFMatcher::create(cv::NORM_HAMMING); // Brute Force matcher
 
     std::string workspace_path_image_;
-
-    // cv::Ptr<cv::BFMatcher> matcher_ = cv::BFMatcher::create(cv::NORM_HAMMING);
-    cv::FlannBasedMatcher matcher_ = cv::FlannBasedMatcher(cv::makePtr<cv::flann::KDTreeIndexParams>(5));
-    // cv::FlannBasedMatcher(cv::makePtr<cv::flann::LshIndexParams>(20, 10, 2));
 
     double time1_;
     double time2_;
