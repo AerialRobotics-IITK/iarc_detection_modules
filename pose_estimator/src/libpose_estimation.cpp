@@ -49,4 +49,24 @@ void PoseEstimator::QuadToGlob(const nav_msgs::Odometry& odom) {
     glob_coord_(2) = glob_coord_(2) + odom.pose.pose.position.z;
 }
 
+Eigen::Vector3d PoseEstimator::getGlobCoord() {
+    return glob_coord_;
+}
+
+void PoseEstimator::setCamToQuadMatrix(const std::vector<double>& mat) {
+    cam_to_quad_ = Eigen::Matrix3d(mat.data()).transpose();
+}
+
+void PoseEstimator::setCamMatrix(const std::vector<double>& mat) {
+    cam_matrix_ = Eigen::Matrix3d(mat.data()).transpose();
+}
+
+void PoseEstimator::setTCamMatrix(const std::vector<double>& mat) {
+    t_cam_ = Eigen::Vector3d(mat.data());
+}
+
+void PoseEstimator::setVerbosity(const bool& flag) {
+    verbose_ = flag;
+}
+
 }  // namespace iarc2020::pose_estimation

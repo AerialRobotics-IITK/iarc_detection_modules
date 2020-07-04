@@ -73,4 +73,28 @@ void PlateDetector::drawContours(cv::Mat& board) {
     cv::drawContours(board, good_contours_, -1, cv::Scalar(255, 255, 255), 2);
 }
 
+std::pair<int, int> PlateDetector::getCentre() {
+    return centre_;
+}
+
+cv::Mat PlateDetector::getThresh() {
+    return thresh_img_;
+}
+
+double PlateDetector::getDistance() {
+    return distance_;
+}
+
+void PlateDetector::setHSVMin(const int& h, const int& s, const int& v) {
+    hsv_min_ = cv::Scalar(h, s, v);
+}
+
+void PlateDetector::setHSVMax(const int& h, const int& s, const int& v) {
+    hsv_max_ = cv::Scalar(h, s, v);
+}
+
+void PlateDetector::setMinArea(const int& area) {
+    min_contour_area_ = area;
+}
+
 }  // namespace iarc2020::plate_detection
