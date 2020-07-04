@@ -2,7 +2,7 @@
 
 namespace iarc2020::plate_detection {
 
-double PlateDetector::scale_factor = 117;  // FIXME: why 123?
+double PlateDetector::scale_factor = 117;  // heuristically determined
 
 void PlateDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
     canny_param_lower_ = lower;
@@ -11,7 +11,9 @@ void PlateDetector::setCannyParams(const int& lower, const int& upper, const int
 }
 
 void PlateDetector::thresholdImage(cv::Mat& img) {
-    if (img.empty()) { return; }
+    if (img.empty()) {
+        return;
+    }
 
     cv::Mat blur_img(img.size(), CV_8UC3);
     cv::Mat hsv_img(img.size(), CV_8UC3);
@@ -34,7 +36,9 @@ void PlateDetector::findGoodContours() {
 
     good_contours_.clear();
     for (auto& contour : contours) {
-        if (cv::contourArea(contour) > min_contour_area_) { good_contours_.push_back(contour); }
+        if (cv::contourArea(contour) > min_contour_area_) {
+            good_contours_.push_back(contour);
+        }
     }
 }
 
@@ -46,7 +50,9 @@ void PlateDetector::fitRect(cv::Mat& board) {
     distance_ = 0.0;
 
     for (int i = 0; i < good_contours_.size(); ++i) {
-        if (good_contours_.empty()) { break; }
+        if (good_contours_.empty()) {
+            break;
+        }
         cv::RotatedRect rotatedRect = cv::minAreaRect(good_contours_[i]);
         area_curr = rotatedRect.size.height * rotatedRect.size.width;
         if (area_curr > area_prev) {
@@ -63,6 +69,8 @@ void PlateDetector::fitRect(cv::Mat& board) {
     cv::circle(board, center_, 5, cv::Scalar(255, 0, 0));
 }
 
-void PlateDetector::drawContours(cv::Mat& board) { cv::drawContours(board, good_contours_, -1, cv::Scalar(255, 255, 255), 2); }
+void PlateDetector::drawContours(cv::Mat& board) {
+    cv::drawContours(board, good_contours_, -1, cv::Scalar(255, 255, 255), 2);
+}
 
 }  // namespace iarc2020::plate_detection

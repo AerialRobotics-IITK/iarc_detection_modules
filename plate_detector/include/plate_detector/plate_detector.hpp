@@ -11,11 +11,11 @@
 namespace iarc2020::plate_detection {
 
 class PlateDetectorNode {
-    public:
+  public:
     void init(ros::NodeHandle& nh);
     void run();
 
-    private:
+  private:
     void imageCallback(const sensor_msgs::ImageConstPtr& msg);
 
     cv::Mat img_;
