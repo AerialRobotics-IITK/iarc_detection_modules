@@ -7,8 +7,8 @@
     </include>
 
     <group ns="$(arg mav_name)">
-        <node pkg="plate_detector" type="plate_detector_node" name="plate_detector_node" output="screen">
-            <rosparam file="$(find plate_detector)/config/param.yaml"/>
+        <node pkg="led_detector" type="led_detector_node" name="led_detector_node" output="screen">
+            <rosparam file="$(find led_detector)/config/param.yaml"/>
             <remap from="image_raw" to="camera_rgb/image_raw"/>
         </node>
     </group>
