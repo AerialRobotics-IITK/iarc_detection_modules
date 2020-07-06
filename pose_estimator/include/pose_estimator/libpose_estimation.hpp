@@ -8,16 +8,16 @@
 namespace iarc2020::pose_estimation {
 
 class PoseEstimator {
-    public:
+  public:
     void init();
 
     void getDistance(const float& dist);
-    Eigen::Vector3d getGlobCoord() { return glob_coord_; };
+    Eigen::Vector3d getGlobCoord();
 
-    void setCamToQuadMatrix(const std::vector<double>& mat) { cam_to_quad_ = Eigen::Matrix3d(mat.data()).transpose(); };
-    void setCamMatrix(const std::vector<double>& mat) { cam_matrix_ = Eigen::Matrix3d(mat.data()).transpose(); };
-    void setTCamMatrix(const std::vector<double>& mat) { t_cam_ = Eigen::Vector3d(mat.data()); };
-    void setVerbosity(const bool& flag) { verbose_ = flag; }
+    void setCamToQuadMatrix(const std::vector<double>& mat);
+    void setCamMatrix(const std::vector<double>& mat);
+    void setTCamMatrix(const std::vector<double>& mat);
+    void setVerbosity(const bool& flag);
 
     void setImgVec(const float& x, const float& y);
     void setQuaternion(const nav_msgs::Odometry& odom);
@@ -25,7 +25,7 @@ class PoseEstimator {
     void CamToQuad();
     void QuadToGlob(const nav_msgs::Odometry& odom);
 
-    private:
+  private:
     Eigen::Matrix3d scale_up_;
     Eigen::Matrix3d cam_matrix_;
     Eigen::Matrix3d cam_to_quad_;

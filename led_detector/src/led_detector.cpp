@@ -8,7 +8,7 @@ void LedDetectorNode::init(ros::NodeHandle& nh) {
 
     int h_min_green, s_min_green, v_min_green;
     int h_max_green, s_max_green, v_max_green;
-    
+
     int canny_lower, canny_upper, canny_ker;
     int max_contour_area;
 
@@ -50,7 +50,9 @@ void LedDetectorNode::init(ros::NodeHandle& nh) {
 }
 
 void LedDetectorNode::run() {
-    if (img_.empty()) { return; };
+    if (img_.empty()) {
+        return;
+    };
 
     detect_.thresholdImage(img_);
     detect_.findGoodContours();
@@ -61,12 +63,12 @@ void LedDetectorNode::run() {
 
     centre_coord_red_.x = centre_pair_red.x;
     centre_coord_red_.y = centre_pair_red.y;
-    centre_coord_red_.d = -1; //CANT BE CALCULATED NEED DEPTH CAMERA
+    centre_coord_red_.d = -1;  // CANT BE CALCULATED NEED DEPTH CAMERA
     centre_coord_red_.header.stamp = ros::Time::now();
 
     centre_coord_green_.x = centre_pair_green.x;
     centre_coord_green_.y = centre_pair_green.y;
-    centre_coord_green_.d = -1; //CANT BE CALCULATED NEED DEPTH CAMERA
+    centre_coord_green_.d = -1;  // CANT BE CALCULATED NEED DEPTH CAMERA
     centre_coord_green_.header.stamp = ros::Time::now();
 
     sensor_msgs::ImagePtr thresh_msg = cv_bridge::CvImage(std_msgs::Header(), "mono8", detect_.getThreshRed()).toImageMsg();

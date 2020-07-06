@@ -1,6 +1,6 @@
 #include <feature_detection/text_detect.hpp>
 
-using namespace ariitk::TextDetect;
+using namespace ariitk::text_detector;
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "text_detect_node");

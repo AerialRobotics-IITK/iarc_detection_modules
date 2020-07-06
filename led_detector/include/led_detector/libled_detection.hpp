@@ -9,20 +9,19 @@
 namespace iarc2020::led_detection {
 
 class LedDetector {
-    public:
-    cv::Point2f getCentreRed() { return centre_red_; };
-    cv::Point2f getCentreGreen() { return centre_green_; };
-    cv::Mat getThreshRed() { return thresh_img_red_; };
-    cv::Mat getThreshGreen() { return thresh_img_green_; };
-    double getDistance() { return distance_; };
+  public:
+    cv::Point2f getCentreRed();
+    cv::Point2f getCentreGreen();
+    cv::Point2f getCentreBlue();
+    cv::Mat getThreshRed();
+    cv::Mat getThreshGreen();
+    double getDistance();
 
-    void setHSVMinRed(const int& h, const int& s, const int& v) { hsv_min_red_ = cv::Scalar(h, s, v); }
-    void setHSVMaxRed(const int& h, const int& s, const int& v) { hsv_max_red_ = cv::Scalar(h, s, v); }
-
-    void setHSVMinGreen(const int& h, const int& s, const int& v) { hsv_min_green_ = cv::Scalar(h, s, v); }
-    void setHSVMaxGreen(const int& h, const int& s, const int& v) { hsv_max_green_ = cv::Scalar(h, s, v); }
-
-    void setMaxArea(const int& area) { max_contour_area_ = area; }
+    void setHSVMinRed(const int& h, const int& s, const int& v);
+    void setHSVMaxRed(const int& h, const int& s, const int& v);
+    void setHSVMinGreen(const int& h, const int& s, const int& v);
+    void setHSVMaxGreen(const int& h, const int& s, const int& v);
+    void setMaxArea(const int& area);
     void setCannyParams(const int& lower, const int& upper, const int& size);
 
     void thresholdImage(cv::Mat& img);
@@ -33,7 +32,7 @@ class LedDetector {
 
     static double scale_factor;
 
-    private:
+  private:
     cv::Point2f centre_red_;
     cv::Point2f centre_green_;
 

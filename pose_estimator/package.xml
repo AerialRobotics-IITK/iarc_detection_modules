@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>plate_detector</name>
+  <name>pose_estimator</name>
   <version>0.0.0</version>
-  <description>The plate_detector package</description>
+  <description>Converts image coordinates to global coordinates</description>
 
-  <maintainer email="atharva@todo.todo">atharva</maintainer>
+  <maintainer email="ashwins@iitk.ac.in">Ashwin Shenai</maintainer>
 
   <license>TODO</license>
 
@@ -15,7 +15,9 @@
 
   <depend>cv_bridge</depend>
   <depend>detector_msgs</depend>
-  <depend>sensor_msgs</depend>
-  <depend>image_transport</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf</depend>
+  <depend>tf_conversions</depend>
+  <depend>eigen_conversions</depend>
 
 </package>

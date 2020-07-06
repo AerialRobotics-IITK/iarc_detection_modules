@@ -1,4 +1,4 @@
-#include <plate_detector/pose_estimator.hpp>
+#include <pose_estimator/pose_estimator.hpp>
 
 using namespace iarc2020::pose_estimation;
 

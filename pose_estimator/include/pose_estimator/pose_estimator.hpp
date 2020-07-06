@@ -7,20 +7,19 @@
 
 #include <detector_msgs/Centre.h>
 #include <detector_msgs/GlobalCoord.h>
-#include <plate_detector/libpose_estimation.hpp>
+#include <pose_estimator/libpose_estimation.hpp>
 
 namespace iarc2020::pose_estimation {
 
 class PoseEstimatorNode {
-    public:
+  public:
     void init(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
     void run();
 
-    void centreCallback(const detector_msgs::Centre& msg) { centre_coord_ = msg; };
-    void odomCallback(const nav_msgs::Odometry& msg) { odom_ = msg; };
-
-    private:
+  private:
     Eigen::Vector3d calculateGlobCoord(const double& img_x, const double& img_y, const double& dist);
+    void centreCallback(const detector_msgs::Centre& msg);
+    void odomCallback(const nav_msgs::Odometry& msg);
 
     detector_msgs::Centre centre_coord_;
     detector_msgs::GlobalCoord global_coord_;

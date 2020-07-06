@@ -1,6 +1,6 @@
 #include <feature_detection/text_detect.hpp>
 
-namespace ariitk::TextDetect {
+namespace ariitk::text_detector {
 
 cv::Mat TextDetect::preprocess(cv::Mat& img) {
     cv::Mat kernel = cv::Mat::eye(7, 7, CV_8U);
@@ -14,7 +14,6 @@ cv::Mat TextDetect::preprocess(cv::Mat& img) {
 }
 
 void TextDetect::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
-    
     nh_private.getParam("workspace_path_image", workspace_path_image_);
     image_sub_ = nh.subscribe("image_raw", 1, &TextDetect::imageCb, this);
 
@@ -23,11 +22,12 @@ void TextDetect::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     surf_image_match_pub_ = nh.advertise<sensor_msgs::Image>("surf_matched_image", 1);
     surf_image_pub_ = nh.advertise<sensor_msgs::Image>("surf_image", 1);
     detected_box_pub_ = nh.advertise<sensor_msgs::Image>("detected_box", 1);
-    
+
     src_ = cv::imread(workspace_path_image_, cv::IMREAD_GRAYSCALE);
-    if (src_.empty())
+    if (src_.empty()) {
         ROS_ERROR("couldn't read the image");
-   
+    }
+
     // computing descriptors for the train image only once
     time1_ = ros::Time::now().toSec();
     detector_->detectAndCompute(src_, cv::noArray(), keypoints1_, descriptors1_);
@@ -63,8 +63,9 @@ void TextDetect::findWhiteTextBox(cv::Mat& frame) {
     for (int i = 0; i < list_contours.size(); i++) {
         cv::convexHull(cv::Mat(list_contours[i]), hull[i]);
 
-        if (cv::contourArea(hull[i]) < 50)
+        if (cv::contourArea(hull[i]) < 50) {
             continue;
+        }
 
         cv::drawContours(drawing, hull, i, cv::Scalar(255, 0, 0), 1, 8);
         detected_box_pub_.publish(cv_bridge::CvImage(std_msgs::Header(), "bgr8", drawing).toImageMsg());
@@ -85,8 +86,9 @@ void TextDetect::findWhiteTextBox(cv::Mat& frame) {
         cv::drawKeypoints(text_resize, keypoints2, surf_);
         std::vector<std::vector<cv::DMatch>> knn_matches;
 
-        if (col2_ != col1_)
+        if (col2_ != col1_) {
             break;
+        }
 
         if (descriptors1_.empty()) {
             ROS_INFO("MatchFinder 1st descriptor empty");
@@ -105,12 +107,13 @@ void TextDetect::findWhiteTextBox(cv::Mat& frame) {
         if (descriptors2.type() != CV_32F) {
             descriptors2.convertTo(descriptors2, CV_32F);
         }
-        
-        if (keypoints1_.size() < 2 || keypoints2.size() < 2)
+
+        if (keypoints1_.size() < 2 || keypoints2.size() < 2) {
             break;
+        }
 
         matcher_.knnMatch(descriptors1_, descriptors2, knn_matches, 2);
-   
+
         const float ratio_thresh = 0.8f;
         std::vector<cv::DMatch> good_matches;
 
@@ -136,4 +139,5 @@ void TextDetect::run() {
     surf_image_pub_.publish(cv_bridge::CvImage(std_msgs::Header(), "bgr8", surf_).toImageMsg());
     surf_image_match_pub_.publish(cv_bridge::CvImage(std_msgs::Header(), "bgr8", img_matches_).toImageMsg());
 }
-}  // namespace ariitk::TextDetect
+
+}  // namespace ariitk::text_detector

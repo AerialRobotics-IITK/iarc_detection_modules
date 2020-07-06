@@ -1,4 +1,4 @@
-#include <plate_detector/libpose_estimation.hpp>
+#include <pose_estimator/libpose_estimation.hpp>
 
 namespace iarc2020::pose_estimation {
 
@@ -37,7 +37,9 @@ void PoseEstimator::setQuaternion(const nav_msgs::Odometry& odom) {
     quad_to_glob_ = eigen_quat.normalized().toRotationMatrix();
 }
 
-void PoseEstimator::CamToQuad() { quad_coord_ = cam_to_quad_ * scale_up_ * cam_matrix_.inverse() * img_vec_ + t_cam_; }
+void PoseEstimator::CamToQuad() {
+    quad_coord_ = cam_to_quad_ * scale_up_ * cam_matrix_.inverse() * img_vec_ + t_cam_;
+}
 
 void PoseEstimator::QuadToGlob(const nav_msgs::Odometry& odom) {
     glob_coord_ = quad_to_glob_ * quad_coord_;
@@ -45,6 +47,26 @@ void PoseEstimator::QuadToGlob(const nav_msgs::Odometry& odom) {
     glob_coord_(0) = glob_coord_(0) + odom.pose.pose.position.x;
     glob_coord_(1) = glob_coord_(1) + odom.pose.pose.position.y;
     glob_coord_(2) = glob_coord_(2) + odom.pose.pose.position.z;
+}
+
+Eigen::Vector3d PoseEstimator::getGlobCoord() {
+    return glob_coord_;
+}
+
+void PoseEstimator::setCamToQuadMatrix(const std::vector<double>& mat) {
+    cam_to_quad_ = Eigen::Matrix3d(mat.data()).transpose();
+}
+
+void PoseEstimator::setCamMatrix(const std::vector<double>& mat) {
+    cam_matrix_ = Eigen::Matrix3d(mat.data()).transpose();
+}
+
+void PoseEstimator::setTCamMatrix(const std::vector<double>& mat) {
+    t_cam_ = Eigen::Vector3d(mat.data());
+}
+
+void PoseEstimator::setVerbosity(const bool& flag) {
+    verbose_ = flag;
 }
 
 }  // namespace iarc2020::pose_estimation

@@ -7,14 +7,14 @@
     </include>
 
     <group ns="$(arg mav_name)">
-        <node pkg="plate_detector"  type="plate_detector_node"  name="plate_detector_node"        output="screen">
-            <rosparam file="$(find plate_detector)/config/param.yaml"/>
+        <node pkg="led_detector"    type="led_detector_node"    name="led_detector_node"        output="screen">
+            <rosparam file="$(find led_detector)/config/param.yaml"/>
             <remap from="image_raw"     to="camera_rgb/image_raw"/>
         </node>
-        <node pkg="pose_estimator"  type="pose_estimator_node"  name="plate_pose_estimator_node"  output="screen">
+        <node pkg="pose_estimator"  type="pose_estimator_node"  name="led_pose_estimator_node"  output="screen">
             <rosparam file="$(find pose_estimator)/config/param.yaml"/>
             <remap from="odom"          to="ground_truth/odometry"/>
-            <remap from="centre_coord"  to="plate_detector_node/centre_coord"/>
+            <remap from="centre_coord"  to="led_detector_node/centre_coord"/>
         </node>
     </group>
 

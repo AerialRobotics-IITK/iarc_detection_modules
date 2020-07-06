@@ -1,4 +1,4 @@
-#include <plate_detector/pose_estimator.hpp>
+#include <pose_estimator/pose_estimator.hpp>
 
 namespace iarc2020::pose_estimation {
 
@@ -55,6 +55,14 @@ Eigen::Vector3d PoseEstimatorNode::calculateGlobCoord(const double& img_x, const
     pose_est_.setQuaternion(odom_);
     pose_est_.QuadToGlob(odom_);
     return pose_est_.getGlobCoord();
+}
+
+void PoseEstimatorNode::centreCallback(const detector_msgs::Centre& msg) {
+    centre_coord_ = msg;
+}
+
+void PoseEstimatorNode::odomCallback(const nav_msgs::Odometry& msg) {
+    odom_ = msg;
 }
 
 }  // namespace iarc2020::pose_estimation

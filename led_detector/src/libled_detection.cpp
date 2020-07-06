@@ -2,8 +2,7 @@
 
 namespace iarc2020::led_detection {
 
-double LedDetector::scale_factor = 117;  // FIXME: why 123?
-
+double LedDetector::scale_factor = 117;  // TODO: area based scaling factor
 void LedDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
     canny_param_lower_ = lower;
     canny_param_upper_ = upper;
@@ -11,7 +10,9 @@ void LedDetector::setCannyParams(const int& lower, const int& upper, const int& 
 }
 
 void LedDetector::thresholdImage(cv::Mat& img) {
-    if (img.empty()) { return; }
+    if (img.empty()) {
+        return;
+    }
 
     cv::Mat blur_img(img.size(), CV_8UC3);
 
@@ -38,12 +39,16 @@ void LedDetector::findGoodContours() {
 
     float temp_radius;
 
-    if(!contours_red_.empty()) {
-        if (cv::contourArea(contours_red_[0]) < max_contour_area_) { cv::minEnclosingCircle(contours_red_[0], centre_red_, temp_radius); }
+    if (!contours_red_.empty()) {
+        if (cv::contourArea(contours_red_[0]) < max_contour_area_) {
+            cv::minEnclosingCircle(contours_red_[0], centre_red_, temp_radius);
+        }
         contours_red_.clear();
     }
-    if(!contours_green_.empty()) {
-        if (cv::contourArea(contours_green_[0]) < max_contour_area_) { cv::minEnclosingCircle(contours_green_[0], centre_green_, temp_radius); }
+    if (!contours_green_.empty()) {
+        if (cv::contourArea(contours_green_[0]) < max_contour_area_) {
+            cv::minEnclosingCircle(contours_green_[0], centre_green_, temp_radius);
+        }
         contours_red_.clear();
     }
 }
@@ -53,6 +58,46 @@ void LedDetector::drawContours(cv::Mat& board) {
     cv::drawContours(board, contours_green_, -1, cv::Scalar(255, 255, 255), 2);
     cv::circle(board, centre_red_, 5, cv::Scalar(255, 0, 0));
     cv::circle(board, centre_green_, 5, cv::Scalar(255, 0, 0));
+}
+
+cv::Point2f LedDetector::getCentreRed() {
+    return centre_red_;
+}
+
+cv::Point2f LedDetector::getCentreGreen() {
+    return centre_green_;
+}
+
+cv::Mat LedDetector::getThreshRed() {
+    return thresh_img_red_;
+}
+
+cv::Mat LedDetector::getThreshGreen() {
+    return thresh_img_green_;
+}
+
+double LedDetector::getDistance() {
+    return distance_;
+}
+
+void LedDetector::setHSVMinRed(const int& h, const int& s, const int& v) {
+    hsv_min_red_ = cv::Scalar(h, s, v);
+}
+
+void LedDetector::setHSVMaxRed(const int& h, const int& s, const int& v) {
+    hsv_max_red_ = cv::Scalar(h, s, v);
+}
+
+void LedDetector::setHSVMinGreen(const int& h, const int& s, const int& v) {
+    hsv_min_green_ = cv::Scalar(h, s, v);
+}
+
+void LedDetector::setHSVMaxGreen(const int& h, const int& s, const int& v) {
+    hsv_max_green_ = cv::Scalar(h, s, v);
+}
+
+void LedDetector::setMaxArea(const int& area) {
+    max_contour_area_ = area;
 }
 
 }  // namespace iarc2020::led_detection

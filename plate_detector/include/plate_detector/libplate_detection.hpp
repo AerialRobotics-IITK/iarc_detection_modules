@@ -9,14 +9,14 @@
 namespace iarc2020::plate_detection {
 
 class PlateDetector {
-    public:
-    std::pair<int, int> getCentre() { return centre_; };
-    cv::Mat getThresh() { return thresh_img_; };
-    double getDistance() { return distance_; };
+  public:
+    std::pair<int, int> getCentre();
+    cv::Mat getThresh();
+    double getDistance();
 
-    void setHSVMin(const int& h, const int& s, const int& v) { hsv_min_ = cv::Scalar(h, s, v); }
-    void setHSVMax(const int& h, const int& s, const int& v) { hsv_max_ = cv::Scalar(h, s, v); }
-    void setMinArea(const int& area) { min_contour_area_ = area; }
+    void setHSVMin(const int& h, const int& s, const int& v);
+    void setHSVMax(const int& h, const int& s, const int& v);
+    void setMinArea(const int& area);
     void setCannyParams(const int& lower, const int& upper, const int& size);
 
     void thresholdImage(cv::Mat& img);
@@ -27,7 +27,7 @@ class PlateDetector {
 
     static double scale_factor;
 
-    private:
+  private:
     std::pair<int, int> centre_;
 
     cv::Scalar hsv_min_;
