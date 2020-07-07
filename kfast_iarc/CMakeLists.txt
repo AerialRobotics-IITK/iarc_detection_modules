@@ -28,9 +28,12 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Ofast -std=gnu++17 -fomit-frame-pointer -mavx2 -march=native -mfma -flto -funroll-all-loops -fpeel-loops -ftracer -ftree-vectorize")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Ofast -std=c11 -fomit-frame-pointer -mavx2 -march=native -mfma -flto -funroll-all-loops -fpeel-loops -ftracer -ftree-vectorize")
 
-add_executable(kfast_iarc_node src/kfast_iarc_node.cpp)
-target_link_libraries(kfast_iarc_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} opencv_features2d)
+add_library(kfast_iarc_lib src/kfast_iarc.cpp)
 
+add_executable(kfast_iarc_node src/kfast_iarc_node.cpp)
+
+target_link_libraries(kfast_iarc_node kfast_iarc_lib)
+target_link_libraries(kfast_iarc_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} opencv_features2d)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
