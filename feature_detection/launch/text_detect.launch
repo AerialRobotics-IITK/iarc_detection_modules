@@ -1,11 +1,16 @@
 <?xml version="1.0"?>
 <launch>
+  <arg name="mav_name" default="firefly"/>
 
-<include file="$(find iarc_simulation_tools)/launch/default.launch"/>
-    
+  <include file="$(find iarc_simulation_tools)/launch/default.launch">
+    <arg name="mav_name" value="$(arg mav_name)"/>
+  </include>
 
-<node pkg="feature_detection" type="text_detect_node" name="text_detect_node" output="screen">
-  <rosparam file="$(find feature_detection)/config/text_detect.yaml" />
-</node>
+  <group ns="$(arg mav_name)">
+    <node pkg="feature_detection" type="text_detect_node" name="text_detect_node" output="screen">
+      <remap from="image_raw" to="camera_front/image_raw" />
+      <rosparam file="$(find feature_detection)/config/text_detect.yaml" />
+    </node>
+  </group>
 
 </launch>

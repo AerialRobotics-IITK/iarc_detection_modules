@@ -15,11 +15,7 @@
 
   <depend>cv_bridge</depend>
   <depend>detector_msgs</depend>
-  <depend>eigen_conversions</depend>
-  <depend>tf</depend>
-  <depend>tf_conversions</depend>
-  <depend>mavros_msgs</depend>
-  <depend>nav_msgs</depend>
-  <depend>dynamic_reconfigure</depend>
+  <depend>sensor_msgs</depend>
+  <depend>image_transport</depend>
 
 </package>

@@ -1,0 +1,23 @@
+h_min_red: 0      #red:0 
+s_min_red: 0      #red:0
+v_min_red: 50     #red:50 
+h_max_red: 32     #red:32
+s_max_red: 50     #red:50
+v_max_red: 255    #red:255
+
+h_min_green: 120  #green:120
+s_min_green: 145  #green:145
+v_min_green: 0    #green:0
+h_max_green: 141  #green:141
+s_max_green: 255  #green:255
+v_max_green: 255  #green:255
+
+canny_lower: 200  #canny params
+canny_upper: 300
+canny_ker: 3
+max_contour_area: 500
+
+t_cam: [0, 0, 0.02]
+cam_to_quad_rot: [0,0,1,-1,0,0,0,-1,0]
+camera_matrix: [415.21159208661874, 0.0, 424.5, 0.0, 415.21159208661874, 240.5, 0.0, 0.0, 1.0]
+verbose: true
