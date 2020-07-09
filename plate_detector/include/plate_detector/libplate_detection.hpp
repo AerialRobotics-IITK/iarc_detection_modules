@@ -46,6 +46,7 @@ class PlateDetector {
 
     double min_contour_area_;
     double distance_;
+    double area_;
 };
 
 }  // namespace iarc2020::plate_detection

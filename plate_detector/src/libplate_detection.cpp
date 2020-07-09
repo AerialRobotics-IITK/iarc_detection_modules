@@ -2,7 +2,7 @@
 
 namespace iarc2020::plate_detection {
 
-double PlateDetector::scale_factor = 117;  // heuristically determined
+double PlateDetector::scale_factor = 20160;  // heuristically determined
 
 void PlateDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
     canny_param_lower_ = lower;
@@ -63,9 +63,16 @@ void PlateDetector::fitRect(cv::Mat& board) {
     }
     centre_.first = center_.x;
     centre_.second = center_.y;
-    distance_ = sqrt((rect_points[1].x - rect_points[0].x) * (rect_points[1].x - rect_points[0].x) +
-                     (rect_points[1].y - rect_points[0].y) * (rect_points[1].y - rect_points[0].y));
-    distance_ = scale_factor / distance_;
+    // distance_ = sqrt((rect_points[1].x - rect_points[0].x) * (rect_points[1].x - rect_points[0].x) +
+    //                  (rect_points[1].y - rect_points[0].y) * (rect_points[1].y - rect_points[0].y));
+
+    area_ = sqrt((rect_points[1].x - rect_points[0].x) * (rect_points[1].x - rect_points[0].x) +
+                 (rect_points[1].y - rect_points[0].y) * (rect_points[1].y - rect_points[0].y)) *
+            sqrt((rect_points[2].x - rect_points[1].x) * (rect_points[2].x - rect_points[1].x) +
+                 (rect_points[2].y - rect_points[1].y) * (rect_points[2].y - rect_points[1].y));
+
+    // distance_ = scale_factor / distance_;
+    distance_ = sqrt(scale_factor / area_);
     cv::circle(board, center_, 5, cv::Scalar(255, 0, 0));
 }
 

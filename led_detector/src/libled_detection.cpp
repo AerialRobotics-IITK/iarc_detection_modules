@@ -2,7 +2,10 @@
 
 namespace iarc2020::led_detection {
 
-double LedDetector::scale_factor = 117;  // TODO: area based scaling factor
+double LedDetector::scale_factor_red = 1664;
+
+double LedDetector::scale_factor_green = 180;
+
 void LedDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
     canny_param_lower_ = lower;
     canny_param_upper_ = upper;
@@ -31,7 +34,9 @@ void LedDetector::findGoodContours() {
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(thresh_img_red_, contours_red_, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
     cv::findContours(thresh_img_green_, contours_green_, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+}
 
+void LedDetector::fitCircle() {
     centre_red_.x = -1;
     centre_red_.y = -1;
     centre_green_.x = -1;
@@ -42,12 +47,14 @@ void LedDetector::findGoodContours() {
     if (!contours_red_.empty()) {
         if (cv::contourArea(contours_red_[0]) < max_contour_area_) {
             cv::minEnclosingCircle(contours_red_[0], centre_red_, temp_radius);
+            distance_red_ = sqrt(scale_factor_red / (3.14159 * temp_radius * temp_radius));
         }
         contours_red_.clear();
     }
     if (!contours_green_.empty()) {
         if (cv::contourArea(contours_green_[0]) < max_contour_area_) {
             cv::minEnclosingCircle(contours_green_[0], centre_green_, temp_radius);
+            distance_green_ = sqrt(scale_factor_green / (3.14159 * temp_radius * temp_radius));
         }
         contours_red_.clear();
     }
@@ -76,8 +83,12 @@ cv::Mat LedDetector::getThreshGreen() {
     return thresh_img_green_;
 }
 
-double LedDetector::getDistance() {
-    return distance_;
+double LedDetector::getDistanceRed() {
+    return distance_red_;
+}
+
+double LedDetector::getDistanceGreen() {
+    return distance_green_;
 }
 
 void LedDetector::setHSVMinRed(const int& h, const int& s, const int& v) {
