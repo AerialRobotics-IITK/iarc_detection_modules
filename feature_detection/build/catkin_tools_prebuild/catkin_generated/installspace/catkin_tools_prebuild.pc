@@ -1,8 +1,0 @@
-prefix=/home/ramdas/iarc_detection_modules/feature_detection/install
-
-Name: catkin_tools_prebuild
-Description: Description of catkin_tools_prebuild
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

@@ -1,6 +1,0 @@
-devel_space: /home/ramdas/iarc_detection_modules/feature_detection/devel
-install: false
-install_space: /home/ramdas/iarc_detection_modules/feature_detection/install
-profile: default
-source_space: /home/ramdas/iarc_detection_modules/feature_detection/src
-workspace: /home/ramdas/iarc_detection_modules/feature_detection
