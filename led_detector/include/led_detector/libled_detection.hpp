@@ -32,8 +32,8 @@ class LedDetector {
     void findFrameCentre(cv::Mat& img);
     void fitRect(cv::Mat& img);
 
-    static double scale_factor_red;
-    static double scale_factor_green;
+    static constexpr double scale_factor_red = 1664;  // ! heuristically determined
+    static constexpr double scale_factor_green = 180; // ! heuristically determined
 
   private:
     cv::Point2f centre_red_;

@@ -2,10 +2,6 @@
 
 namespace iarc2020::led_detection {
 
-double LedDetector::scale_factor_red = 1664;
-
-double LedDetector::scale_factor_green = 180;
-
 void LedDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
     canny_param_lower_ = lower;
     canny_param_upper_ = upper;

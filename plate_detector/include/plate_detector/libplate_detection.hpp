@@ -25,7 +25,8 @@ class PlateDetector {
     void findFrameCentre(cv::Mat& img);
     void fitRect(cv::Mat& img);
 
-    static double scale_factor;
+    static constexpr double scale_factor = 20160; // ! heuristically determined
+                                                  // * 117 for Detection using side
 
   private:
     std::pair<int, int> centre_;
