@@ -23,7 +23,7 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     pose_est_.setTCamMatrix(temp_list);
 
     bool verbose_flag = true;
-    nh_private.getParam("verbose", verbose_flag);
+    nh_private.param("verbose", verbose_flag, true);
     pose_est_.setVerbosity(verbose_flag);
 }
 
