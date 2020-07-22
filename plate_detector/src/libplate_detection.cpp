@@ -66,7 +66,7 @@ void PlateDetector::fitRect(cv::Mat& board) {
     * If you want to revert back to estimation using side use this:
 
     distance_ = sqrt((rect_points[1].x - rect_points[0].x) * (rect_points[1].x - rect_points[0].x) +
-                      (rect_points[1].y - rect_points[0].y) * (rect_points[1].y - rect_points[0].y));
+                     (rect_points[1].y - rect_points[0].y) * (rect_points[1].y - rect_points[0].y));
 
     distance_ = scale_factor / distance_;
     */
