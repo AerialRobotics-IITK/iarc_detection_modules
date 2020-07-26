@@ -15,7 +15,8 @@ class LedDetector {
     cv::Point2f getCentreBlue();
     cv::Mat getThreshRed();
     cv::Mat getThreshGreen();
-    double getDistance();
+    double getDistanceRed();
+    double getDistanceGreen();
 
     void setHSVMinRed(const int& h, const int& s, const int& v);
     void setHSVMaxRed(const int& h, const int& s, const int& v);
@@ -26,11 +27,13 @@ class LedDetector {
 
     void thresholdImage(cv::Mat& img);
     void findGoodContours();
+    void fitCircle();
     void drawContours(cv::Mat& img);
     void findFrameCentre(cv::Mat& img);
     void fitRect(cv::Mat& img);
 
-    static double scale_factor;
+    static constexpr double scale_factor_red = 1664;  // ! heuristically determined
+    static constexpr double scale_factor_green = 180; // ! heuristically determined
 
   private:
     cv::Point2f centre_red_;
@@ -52,7 +55,9 @@ class LedDetector {
     int canny_kernel_size_;
 
     double max_contour_area_;
-    double distance_;
+    double distance_red_;
+    double distance_green_;
+    double area_;
 };
 
 }  // namespace iarc2020::led_detection

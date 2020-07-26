@@ -25,7 +25,8 @@ class PlateDetector {
     void findFrameCentre(cv::Mat& img);
     void fitRect(cv::Mat& img);
 
-    static double scale_factor;
+    static constexpr double scale_factor = 20160; // ! heuristically determined
+                                                  // * 117 for Detection using side
 
   private:
     std::pair<int, int> centre_;
@@ -46,6 +47,7 @@ class PlateDetector {
 
     double min_contour_area_;
     double distance_;
+    double area_;
 };
 
 }  // namespace iarc2020::plate_detection

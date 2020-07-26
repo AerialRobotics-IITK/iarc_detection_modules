@@ -27,13 +27,11 @@ class PoseEstimatorNode {
 
     nav_msgs::Odometry odom_;
     Eigen::Vector3d glob_coord_;
-    Eigen::Vector3d straight_vec_;
 
     ros::Subscriber centre_coord_sub_;
     ros::Subscriber odom_sub_;
 
     ros::Publisher glob_coord_pub_;
-    ros::Publisher front_coord_pub_;
 
     PoseEstimator pose_est_;
 };

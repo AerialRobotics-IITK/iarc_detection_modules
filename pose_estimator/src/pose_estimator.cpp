@@ -7,7 +7,6 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     odom_sub_ = nh.subscribe("odom", 10, &PoseEstimatorNode::odomCallback, this);
 
     glob_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("estimated_coord", 10);
-    front_coord_pub_ = nh.advertise<detector_msgs::GlobalCoord>("front_coord", 10);
 
     pose_est_.init();
 
@@ -24,7 +23,7 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     pose_est_.setTCamMatrix(temp_list);
 
     bool verbose_flag = true;
-    nh_private.getParam("verbose", verbose_flag);
+    nh_private.param("verbose", verbose_flag, true);
     pose_est_.setVerbosity(verbose_flag);
 }
 
@@ -33,13 +32,6 @@ void PoseEstimatorNode::run() {
         glob_coord_pub_.publish(global_coord_);
         return;
     }
-
-    // FIXME: no hardcoding
-    straight_vec_ = calculateGlobCoord(160, 120, 5.0);
-    front_coord_.x = straight_vec_(0);
-    front_coord_.y = straight_vec_(1);
-    front_coord_.z = straight_vec_(2);
-    front_coord_pub_.publish(front_coord_);
 
     glob_coord_ = calculateGlobCoord(centre_coord_.x, centre_coord_.y, centre_coord_.d);
     global_coord_.x = glob_coord_(0);
