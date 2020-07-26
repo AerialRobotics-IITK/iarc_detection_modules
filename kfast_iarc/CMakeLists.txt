@@ -13,13 +13,10 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Ofast -std=c11 -fomit-frame-p
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-cs_add_library(kfast_iarc_lib src/kfast_iarc.cpp)
+cs_add_library(${PROJECT_NAME}_lib src/${PROJECT_NAME}.cpp)
 
-cs_add_executable(kfast_iarc_node src/kfast_iarc_node.cpp)
-
-target_link_libraries(kfast_iarc_node kfast_iarc_lib)
-
-target_link_libraries(kfast_iarc_node ${OpenCV_LIBRARIES})
+cs_add_executable(${PROJECT_NAME}_node src/${PROJECT_NAME}_node.cpp)
+target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME}_lib ${OpenCV_LIBRARIES})
 
 cs_install()
 cs_export()
