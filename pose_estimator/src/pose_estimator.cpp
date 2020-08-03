@@ -7,6 +7,7 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     odom_sub_ = nh.subscribe("odom", 10, &PoseEstimatorNode::odomCallback, this);
 
     glob_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("estimated_coord", 10);
+    front_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("front_coord", 10);
 
     pose_est_.init();
 
@@ -25,9 +26,19 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     bool verbose_flag = true;
     nh_private.param("verbose", verbose_flag, true);
     pose_est_.setVerbosity(verbose_flag);
+
+    nh_private.getParam("camera_height", camera_height_);
+    nh_private.getParam("camera_width", camera_width_);
 }
 
 void PoseEstimatorNode::run() {
+    straight_vec_ = calculateGlobCoord(camera_width_ / 2, camera_height_ / 2, 5);
+    front_coord_.x = straight_vec_(0);
+    front_coord_.y = straight_vec_(1);
+    front_coord_.z = straight_vec_(2);
+
+    front_coord_pub_.publish(front_coord_);
+
     if ((centre_coord_.x == -1) || (centre_coord_.y == -1)) {
         glob_coord_pub_.publish(global_coord_);
         return;
