@@ -27,12 +27,12 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     nh_private.param("verbose", verbose_flag, true);
     pose_est_.setVerbosity(verbose_flag);
 
-    nh_private.getParam("camera_height", camera_height_);
-    nh_private.getParam("camera_width", camera_width_);
+    nh_private.getParam("image_height", image_height_);
+    nh_private.getParam("image_width", image_width_);
 }
 
 void PoseEstimatorNode::run() {
-    straight_vec_ = calculateGlobCoord(camera_width_ / 2, camera_height_ / 2, 5);
+    straight_vec_ = calculateGlobCoord(image_width_ / 2, image_height_ / 2, 5);
     front_coord_.x = straight_vec_(0);
     front_coord_.y = straight_vec_(1);
     front_coord_.z = straight_vec_(2);

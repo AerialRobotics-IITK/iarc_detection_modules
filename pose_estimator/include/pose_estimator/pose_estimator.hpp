@@ -21,8 +21,8 @@ class PoseEstimatorNode {
     void centreCallback(const detector_msgs::Centre& msg);
     void odomCallback(const nav_msgs::Odometry& msg);
 
-    int camera_height_;
-    int camera_width_;
+    int image_height_;
+    int image_width_;
 
     detector_msgs::Centre centre_coord_;
     detector_msgs::GlobalCoord global_coord_;
