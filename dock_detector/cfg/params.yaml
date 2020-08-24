@@ -7,7 +7,7 @@ v_max: 240                  # Maximum value of value.
 canny_lower: 100            # Lower bound for canny edge.
 canny_upper: 200            # Upper bound for canny edge.
 canny_ker: 3                # Size of the kernel used for Canny edge detection,
-dock_radius: 2              # Radius of the docks.
-inter_centre_dist: 6        # Distance between the centre of one of outer circles and that of the inner circle.
-min_contour_area: 1200      # Minimum area of the contour, used for filtering.
+min_contour_area: 300       # Minimum area of the contour, used for filtering.
+std_dev_bound: 0.465        # Upper bound for the standard deviation of the distances between points on the contour and and the centre. 
+                            # It's used to determine whether a contour can be said a circle or not.
 verbose: true               # Used for debugging purposes.
