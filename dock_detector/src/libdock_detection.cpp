@@ -68,9 +68,10 @@ void DockDetector::drawContours(cv::Mat& img) {
 std::pair<int, int> DockDetector::getCentre(cv::Mat& img, const double& std_dev_bound) {
     centre_.first = 0;
     centre_.second = 0;
-    static int freq_no_circle = 0;  // Using this variable for the purpose of finding better parameters by comparing the number of times no circle was found.
-    static int freq_non_zero_circles =
-        0;  // Using this variable for the purpose of finding better parameters by comparing the number of times non zero circles were found.
+    static int freq_no_circle = 0;         // Using this variable for the purpose of finding better parameters by comparing the
+                                           // number of times no circle was found.
+    static int freq_non_zero_circles = 0;  // Using this variable for the purpose of finding better parameters by
+                                           // comparing the number of times non zero circles were found.
     std::vector<cv::Scalar> circles;
     for (int i = 0; i < good_contours_.size(); i++) {
         cv::Scalar circle = circleDet(good_contours_[i], std_dev_bound);
