@@ -22,6 +22,7 @@ class DockDetector {
     void thresholdImage(cv::Mat& img);
     void findGoodContours(cv::Mat& img);
     void drawContours(cv::Mat& img);
+    const double scale_factor = 19.15407;  // heuristically determined.
 
   private:
     std::pair<int, int> centre_;
