@@ -102,6 +102,7 @@ std::pair<int, int> DockDetector::getCentre(cv::Mat& img, const double& std_dev_
         avg_r /= circles.size();
         centre_.first = avg_x;
         centre_.second = avg_y;
+        distance_ = sqrt(scale_factor / (M_PI * avg_r * avg_r));
     }
     return centre_;
 }
@@ -111,7 +112,7 @@ cv::Mat DockDetector::getThresh() {
 }
 
 double DockDetector::getDistance() {
-    return distance_;  // This hasn't been calculated yet..I'll do it soon.
+    return distance_;
 }
 
 void DockDetector::setHSVMin(const int& h, const int& s, const int& v) {
