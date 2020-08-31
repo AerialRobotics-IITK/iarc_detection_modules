@@ -13,7 +13,7 @@
         </node>
         <node pkg="pose_estimator" type="pose_estimator_node" name="dock_pose_estimator_node"  output="screen">
             <rosparam file="$(find pose_estimator)/config/param.yaml" />
-            <remap from="odom" to="ground_truth/odometry" />
+            <remap from="odom"         to="ground_truth/odometry" />
             <remap from="centre_coord" to="dock_detector_node/centre_coord" />
         </node>
         <node pkg="led_detector"   type="led_detector_node"   name="led_detector_node"  output="screen">
