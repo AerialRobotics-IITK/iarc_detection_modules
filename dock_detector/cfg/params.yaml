@@ -10,4 +10,4 @@ canny_ker: 3                # Size of the kernel used for Canny edge detection,
 min_contour_area: 300       # Minimum area of the contour, used for filtering.
 std_dev_bound: 0.465        # Upper bound for the standard deviation of the distances between points on the contour and and the centre. 
                             # It's used to determine whether a contour can be said a circle or not.
-verbose: true               # Used for debugging purposes.
+verbose: false              # Used for debugging purposes.
