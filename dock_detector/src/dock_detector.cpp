@@ -6,6 +6,7 @@ void DockDetectorNode::init(ros::NodeHandle& nh) {
     int h_max, s_max, v_max;
     int canny_lower, canny_upper, canny_ker;
     int min_contour_area;
+    bool verbose;
 
     img_sub_ = nh.subscribe("image_raw", 1, &DockDetectorNode::imageCallback, this);
 
@@ -22,11 +23,13 @@ void DockDetectorNode::init(ros::NodeHandle& nh) {
     nh_private.getParam("canny_ker", canny_ker);
     nh_private.getParam("min_contour_area", min_contour_area);
     nh_private.getParam("std_dev_bound", std_dev_bound_);
+    nh_private.getParam("verbose", verbose);
 
     detect_.setHSVMin(h_min, s_min, v_min);
     detect_.setHSVMax(h_max, s_max, v_max);
     detect_.setCannyParams(canny_lower, canny_upper, canny_ker);
     detect_.setMinArea(min_contour_area);
+    detect_.setVerbose(verbose);
 
     centre_pub_ = nh_private.advertise<detector_msgs::Centre>("centre_coord", 10);
     thresh_pub_ = nh_private.advertise<sensor_msgs::Image>("thresh_img", 10);

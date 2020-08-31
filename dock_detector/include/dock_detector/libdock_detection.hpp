@@ -18,6 +18,7 @@ class DockDetector {
     void setHSVMax(const int& h, const int& s, const int& v);
     void setMinArea(const int& area);
     void setCannyParams(const int& lower, const int& upper, const int& size);
+    void setVerbose(const bool& verbose);
 
     void thresholdImage(cv::Mat& img);
     void findGoodContours(cv::Mat& img);
@@ -41,6 +42,7 @@ class DockDetector {
 
     double min_contour_area_;
     double distance_;
+    bool verbose_;
 };
 
 }  // namespace ariitk::dock_detection

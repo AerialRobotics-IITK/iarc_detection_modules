@@ -79,12 +79,15 @@ std::pair<int, int> DockDetector::getCentre(cv::Mat& img, const double& std_dev_
             circles.push_back(circle);
         }
     }
-    if (circles.empty()) {
+    if (circles.empty() && verbose_) {
         freq_no_circle++;
         ROS_INFO("No circle found for %d times...Retry!!!\n", freq_no_circle);
     } else {
-        freq_non_zero_circles++;
-        ROS_INFO("Found %d circle(s) and found non zero circles for %d times\n", circles.size(), freq_non_zero_circles);
+        if (verbose_) {
+            freq_non_zero_circles++;
+            ROS_INFO("Found %d circle(s) and found non zero circles for %d times\n", circles.size(), freq_non_zero_circles);
+        }
+
         for (size_t i = 0; i < circles.size(); i++) {
             cv::Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
             int radius = cvRound(circles[i][2]);
@@ -125,6 +128,10 @@ void DockDetector::setHSVMax(const int& h, const int& s, const int& v) {
 
 void DockDetector::setMinArea(const int& area) {
     min_contour_area_ = area;
+}
+
+void DockDetector::setVerbose(const bool& verbose) {
+    verbose_ = verbose;
 }
 
 }  // namespace ariitk::dock_detection
