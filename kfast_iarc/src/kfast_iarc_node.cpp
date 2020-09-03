@@ -3,7 +3,7 @@
 using namespace ariitk::kfast;
 
 int main(int argc, char** argv) {
-    ros::init(argc, argv, "KFAST_node");
+    ros::init(argc, argv, "kfast_iarc_node");
     ros::NodeHandle nh;
     ros::NodeHandle nh_private("~");
 

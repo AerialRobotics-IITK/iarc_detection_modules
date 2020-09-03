@@ -1,11 +1,12 @@
 #include <kfast_iarc/KFAST.hpp>
+#include <chrono> 
 
 namespace ariitk::kfast {
 
 void kfast::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     grayscale_image = nh.advertise<sensor_msgs::Image>("kfast_grayscale", 1);
     keypoint_vectors = nh.advertise<std_msgs::Int32MultiArray>("kfast_keypoints", 1);
-    input_image = nh.subscribe("/firefly/camera_front/image_raw", 1, &kfast::CallBack, this);
+    input_image = nh.subscribe("camera_front/image_raw", 1, &kfast::CallBack, this);
 }
 
 void kfast::CallBack(const sensor_msgs::ImageConstPtr& msg) {
@@ -27,7 +28,9 @@ void kfast::CallBack(const sensor_msgs::ImageConstPtr& msg) {
 
     img_bridge.header.stamp = ros::Time::now();
     img_bridge.image = image_gray;
-
+    std::chrono::time_point<std::chrono::high_resolution_clock> time1_,time2_;
+    time1_ = std::chrono::high_resolution_clock::now();
+    image =frame;
     for (int i = 0; i < warmups; ++i)
         KFAST<KFAST_multithread, nonmax_suppress>(image.data, image.cols, image.rows, static_cast<int>(image.step), KFAST_kps, thresh);
     {
@@ -49,6 +52,11 @@ void kfast::CallBack(const sensor_msgs::ImageConstPtr& msg) {
     kfast_keypoints.layout.dim[0].stride = 3 * KFAST_kps.size();
     kfast_keypoints.layout.dim[1].stride = 3;
     kfast_keypoints.data = vec;
+    time2_ = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_seconds = time2_ - time1_;
+    double time=elapsed_seconds.count(); 
+    ROS_INFO("Time taken for computing keypoints: %lf", time);
+    ROS_INFO("KFAST keypoints:%d",int(KFAST_kps.size()));
     return;
 }
 void kfast::run() {
