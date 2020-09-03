@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="mav_name" default="firefly"/>
+
+  <include file="$(find iarc_simulation_tools)/launch/default.launch">
+    <arg name="mav_name" value="$(arg mav_name)"/>
+  </include>
+
+  <group ns="$(arg mav_name)">
+    <node pkg="kfast_iarc" type="kfast_iarc_node" name="kfast_iarc_node" output="screen">
+    </node>
+  </group>
+
+</launch>
