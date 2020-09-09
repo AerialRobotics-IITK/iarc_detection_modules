@@ -1,11 +1,11 @@
 #include <dock_detector/libdock_detection.hpp>
 
 namespace ariitk::dock_detection {
-void DockDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
-    canny_param_lower_ = lower;
-    canny_param_upper_ = upper;
-    canny_kernel_size_ = size;
-}
+// void DockDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
+//     canny_param_lower_ = lower;
+//     canny_param_upper_ = upper;
+//     canny_kernel_size_ = size;
+// }
 
 void DockDetector::thresholdImage(cv::Mat& img) {
     if (img.empty()) {
@@ -25,21 +25,21 @@ void DockDetector::thresholdImage(cv::Mat& img) {
     cv::inRange(dilated_again, hsv_min_, hsv_max_, thresh_img_);
 }
 
-void DockDetector::findGoodContours(cv::Mat& img) {
-    cv::Mat canny_img(thresh_img_.size(), CV_8UC1);
-    cv::Canny(thresh_img_, canny_img, canny_param_lower_, canny_param_upper_, canny_kernel_size_);
+// void DockDetector::findGoodContours(cv::Mat& img) {
+//     cv::Mat canny_img(thresh_img_.size(), CV_8UC1);
+//     cv::Canny(thresh_img_, canny_img, canny_param_lower_, canny_param_upper_, canny_kernel_size_);
 
-    good_contours_.clear();
-    std::vector<std::vector<cv::Point>> contours;
-    std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(thresh_img_, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+//     good_contours_.clear();
+//     std::vector<std::vector<cv::Point>> contours;
+//     std::vector<cv::Vec4i> hierarchy;
+//     cv::findContours(thresh_img_, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
 
-    for (auto& contour : contours) {
-        if (cv::contourArea(contour) > min_contour_area_) {
-            good_contours_.push_back(contour);
-        }
-    }
-}
+//     for (auto& contour : contours) {
+//         if (cv::contourArea(contour) > min_contour_area_) {
+//             good_contours_.push_back(contour);
+//         }
+//     }
+// }
 
 cv::Scalar DockDetector::circleDet(const std::vector<cv::Point>& contour, const double& std_dev_bound) {
     int n = contour.size();
@@ -61,9 +61,9 @@ cv::Scalar DockDetector::circleDet(const std::vector<cv::Point>& contour, const 
     }
 }
 
-void DockDetector::drawContours(cv::Mat& img) {
-    cv::drawContours(img, good_contours_, -1, cv::Scalar(255, 255, 255), 2);
-}
+// void DockDetector::drawContours(cv::Mat& img) {
+//     cv::drawContours(img, good_contours_, -1, cv::Scalar(255, 255, 255), 2);
+// }
 
 std::pair<int, int> DockDetector::getCentre(cv::Mat& img, const double& std_dev_bound) {
     centre_.first = 0;
@@ -110,25 +110,25 @@ std::pair<int, int> DockDetector::getCentre(cv::Mat& img, const double& std_dev_
     return centre_;
 }
 
-cv::Mat DockDetector::getThresh() {
-    return thresh_img_;
-}
+// cv::Mat DockDetector::getThresh() {
+//     return thresh_img_;
+// }
 
-double DockDetector::getDistance() {
-    return distance_;
-}
+// double DockDetector::getDistance() {
+//     return distance_;
+// }
 
-void DockDetector::setHSVMin(const int& h, const int& s, const int& v) {
-    hsv_min_ = cv::Scalar(h, s, v);
-}
+// void DockDetector::setHSVMin(const int& h, const int& s, const int& v) {
+//     hsv_min_ = cv::Scalar(h, s, v);
+// }
 
-void DockDetector::setHSVMax(const int& h, const int& s, const int& v) {
-    hsv_max_ = cv::Scalar(h, s, v);
-}
+// void DockDetector::setHSVMax(const int& h, const int& s, const int& v) {
+//     hsv_max_ = cv::Scalar(h, s, v);
+// }
 
-void DockDetector::setMinArea(const int& area) {
-    min_contour_area_ = area;
-}
+// void DockDetector::setMinArea(const int& area) {
+//     min_contour_area_ = area;
+// }
 
 void DockDetector::setVerbose(const bool& verbose) {
     verbose_ = verbose;
