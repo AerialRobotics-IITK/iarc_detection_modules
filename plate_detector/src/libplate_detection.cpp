@@ -96,6 +96,10 @@ double PlateDetector::getDistance() {
     return distance_;
 }
 
+double PlateDetector::getArea() {
+    return area_;
+}
+
 void PlateDetector::setHSVMin(const int& h, const int& s, const int& v) {
     hsv_min_ = cv::Scalar(h, s, v);
 }

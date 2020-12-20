@@ -13,6 +13,7 @@ class PlateDetector {
     std::pair<int, int> getCentre();
     cv::Mat getThresh();
     double getDistance();
+    double getArea();
 
     void setHSVMin(const int& h, const int& s, const int& v);
     void setHSVMax(const int& h, const int& s, const int& v);

@@ -7,5 +7,5 @@ v_max: 200        #80
 canny_lower: 200  #canny params
 canny_upper: 300
 canny_ker: 3
-min_contour_area: 1200
+min_contour_area: 800
 verbose: true
