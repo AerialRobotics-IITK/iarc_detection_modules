@@ -5,6 +5,7 @@ namespace iarc2020::pose_estimation {
 void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     centre_coord_sub_ = nh.subscribe("centre_coord", 10, &PoseEstimatorNode::centreCallback, this);
     odom_sub_ = nh.subscribe("odom", 10, &PoseEstimatorNode::odomCallback, this);
+    corners_sub_ = nh.subscribe("corners", 10, &PoseEstimatorNode::cornersCallback, this);
 
     glob_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("estimated_coord", 10);
     front_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("front_coord", 10);
@@ -49,6 +50,21 @@ void PoseEstimatorNode::run() {
     global_coord_.y = glob_coord_(1);
     global_coord_.z = glob_coord_(2);
     glob_coord_pub_.publish(global_coord_);
+
+    c1_quad_coord_ = calculateQuadCoord(corners_.c1_x, corners_.c1_y, centre_coord_.d);
+    c2_quad_coord_ = calculateQuadCoord(corners_.c2_x, corners_.c2_y, centre_coord_.d);
+    c3_quad_coord_ = calculateQuadCoord(corners_.c3_x, corners_.c3_y, centre_coord_.d);
+    c4_quad_coord_ = calculateQuadCoord(corners_.c4_x, corners_.c4_y, centre_coord_.d);
+
+    std::cout << c1_quad_coord_ << std::endl
+                                << std::endl
+              << c2_quad_coord_ << std::endl
+                                << std::endl
+              << c3_quad_coord_ << std::endl
+                                << std::endl
+              << c4_quad_coord_ << std::endl
+                                << std::endl
+                                << std::endl;
 }
 
 Eigen::Vector3d PoseEstimatorNode::calculateGlobCoord(const double& img_x, const double& img_y, const double& dist) {
@@ -60,12 +76,23 @@ Eigen::Vector3d PoseEstimatorNode::calculateGlobCoord(const double& img_x, const
     return pose_est_.getGlobCoord();
 }
 
+Eigen::Vector3d PoseEstimatorNode::calculateQuadCoord(const double& img_x, const double& img_y, const double& dist) {
+    pose_est_.getDistance(dist);
+    pose_est_.setImgVec(img_x, img_y);
+    pose_est_.CamToQuad();
+    return pose_est_.getQuadCoord();
+}
+
 void PoseEstimatorNode::centreCallback(const detector_msgs::Centre& msg) {
     centre_coord_ = msg;
 }
 
 void PoseEstimatorNode::odomCallback(const nav_msgs::Odometry& msg) {
     odom_ = msg;
+}
+
+void PoseEstimatorNode::cornersCallback(const detector_msgs::Corners& msg) {
+    corners_ = msg;
 }
 
 }  // namespace iarc2020::pose_estimation

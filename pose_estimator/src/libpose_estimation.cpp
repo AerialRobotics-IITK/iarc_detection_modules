@@ -53,6 +53,10 @@ Eigen::Vector3d PoseEstimator::getGlobCoord() {
     return glob_coord_;
 }
 
+Eigen::Vector3d PoseEstimator::getQuadCoord() {
+    return quad_coord_;
+}
+
 void PoseEstimator::setCamToQuadMatrix(const std::vector<double>& mat) {
     cam_to_quad_ = Eigen::Matrix3d(mat.data()).transpose();
 }

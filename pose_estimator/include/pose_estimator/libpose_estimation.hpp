@@ -13,6 +13,7 @@ class PoseEstimator {
 
     void getDistance(const float& dist);
     Eigen::Vector3d getGlobCoord();
+    Eigen::Vector3d getQuadCoord();
 
     void setCamToQuadMatrix(const std::vector<double>& mat);
     void setCamMatrix(const std::vector<double>& mat);
