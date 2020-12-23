@@ -78,6 +78,12 @@ void PlateDetector::fitRect(cv::Mat& board) {
 
     distance_ = sqrt(scale_factor / area_);
     cv::circle(board, center_, 5, cv::Scalar(255, 0, 0));
+
+    // std::cout << rect_points[0] << std::endl 
+    //           << rect_points[1] << std::endl
+    //           << rect_points[2] << std::endl
+    //           << rect_points[3] << std::endl << std::endl;
+
 }
 
 void PlateDetector::drawContours(cv::Mat& board) {
@@ -90,6 +96,10 @@ std::pair<int, int> PlateDetector::getCentre() {
 
 cv::Mat PlateDetector::getThresh() {
     return thresh_img_;
+}
+
+cv::Point2f* PlateDetector::getCorners() {
+    return rect_points;
 }
 
 double PlateDetector::getDistance() {
