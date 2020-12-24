@@ -9,6 +9,7 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
 
     glob_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("estimated_coord", 10);
     front_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("front_coord", 10);
+    plate_front_vec_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("plate_front_vec", 10); 
 
     pose_est_.init();
 
@@ -51,20 +52,17 @@ void PoseEstimatorNode::run() {
     global_coord_.z = glob_coord_(2);
     glob_coord_pub_.publish(global_coord_);
 
-    c1_quad_coord_ = calculateQuadCoord(corners_.c1_x, corners_.c1_y, centre_coord_.d);
-    c2_quad_coord_ = calculateQuadCoord(corners_.c2_x, corners_.c2_y, centre_coord_.d);
-    c3_quad_coord_ = calculateQuadCoord(corners_.c3_x, corners_.c3_y, centre_coord_.d);
-    c4_quad_coord_ = calculateQuadCoord(corners_.c4_x, corners_.c4_y, centre_coord_.d);
+    plate_front_vec_temp_ = calculatePlateFrontVec();
+    plate_front_vec_.x = plate_front_vec_temp_(0);
+    plate_front_vec_.y = plate_front_vec_temp_(1);
+    plate_front_vec_.z = plate_front_vec_temp_(2);
+    plate_front_vec_pub_.publish(plate_front_vec_);
 
-    std::cout << c1_quad_coord_ << std::endl
-                                << std::endl
-              << c2_quad_coord_ << std::endl
-                                << std::endl
-              << c3_quad_coord_ << std::endl
-                                << std::endl
-              << c4_quad_coord_ << std::endl
-                                << std::endl
-                                << std::endl;
+    // std::cout << c1_quad_coord_ << std::endl
+    //           << c2_quad_coord_ << std::endl
+    //           << c3_quad_coord_ << std::endl
+    //           << c4_quad_coord_ << std::endl
+    //                             << std::endl;
 }
 
 Eigen::Vector3d PoseEstimatorNode::calculateGlobCoord(const double& img_x, const double& img_y, const double& dist) {
@@ -81,6 +79,19 @@ Eigen::Vector3d PoseEstimatorNode::calculateQuadCoord(const double& img_x, const
     pose_est_.setImgVec(img_x, img_y);
     pose_est_.CamToQuad();
     return pose_est_.getQuadCoord();
+}
+
+Eigen::Vector3d PoseEstimatorNode::calculatePlateFrontVec() {
+    c1_quad_coord_ = calculateQuadCoord(corners_.c1_x, corners_.c1_y, centre_coord_.d);
+    c2_quad_coord_ = calculateQuadCoord(corners_.c2_x, corners_.c2_y, centre_coord_.d);
+    c3_quad_coord_ = calculateQuadCoord(corners_.c3_x, corners_.c3_y, centre_coord_.d);
+    c4_quad_coord_ = calculateQuadCoord(corners_.c4_x, corners_.c4_y, centre_coord_.d);
+
+    Eigen::Vector3d cross_p;
+    cross_p = (c2_quad_coord_ - c4_quad_coord_).cross(c1_quad_coord_ - c3_quad_coord_);
+    pose_est_.setQuaternion(odom_);
+    pose_est_.QuadToGlobPlateFrontVec(odom_, cross_p);
+    return pose_est_.getPlateFrontVec();
 }
 
 void PoseEstimatorNode::centreCallback(const detector_msgs::Centre& msg) {

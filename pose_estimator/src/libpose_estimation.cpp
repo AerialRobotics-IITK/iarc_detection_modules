@@ -49,12 +49,25 @@ void PoseEstimator::QuadToGlob(const nav_msgs::Odometry& odom) {
     glob_coord_(2) = glob_coord_(2) + odom.pose.pose.position.z;
 }
 
+void PoseEstimator::QuadToGlobPlateFrontVec(const nav_msgs::Odometry& odom, const Eigen::Vector3d cross_p) {
+    plate_front_vec_ = quad_to_glob_ * cross_p;
+
+    // plate_front_vec_(0) = plate_front_vec_(0) + odom.pose.pose.position.x;
+    // plate_front_vec_(1) = plate_front_vec_(1) + odom.pose.pose.position.y;
+    // plate_front_vec_(2) = plate_front_vec_(2) + odom.pose.pose.position.z;
+    // std::cout << quad_to_glob_ << std::endl << std::endl;
+}
+
 Eigen::Vector3d PoseEstimator::getGlobCoord() {
     return glob_coord_;
 }
 
 Eigen::Vector3d PoseEstimator::getQuadCoord() {
     return quad_coord_;
+}
+
+Eigen::Vector3d PoseEstimator::getPlateFrontVec() {
+    return plate_front_vec_;
 }
 
 void PoseEstimator::setCamToQuadMatrix(const std::vector<double>& mat) {

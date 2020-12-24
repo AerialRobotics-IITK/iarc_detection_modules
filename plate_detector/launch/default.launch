@@ -15,11 +15,17 @@
             <rosparam file="$(find pose_estimator)/config/param.yaml" />
             <remap from="odom" to="ground_truth/odometry" />
             <remap from="centre_coord" to="plate_detector_node/centre_coord" />
+            <remap from="corners"       to="plate_detector_node/corners"/>
         </node>
         <node pkg="led_detector"   type="led_detector_node"   name="led_detector_node"         output="screen">
             <rosparam file="$(find led_detector)/config/param.yaml" />
             <remap from="image_raw"    to="camera_rgb/image_raw" />
         </node>
+        <!-- <node pkg="mast_finder"    type="mast_finder_node"    name="mast_locator_node"         output="screen">
+            <rosparam file="$(find mast_finder)/config/param.yaml" />
+            <remap from="pose"         to="/command/pose" />
+            <remap from="odom"         to="ground_truth/odometry" />
+        </node> -->
     </group>
 
 </launch>

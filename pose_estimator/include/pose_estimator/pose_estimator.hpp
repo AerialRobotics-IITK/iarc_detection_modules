@@ -20,6 +20,7 @@ class PoseEstimatorNode {
   private:
     Eigen::Vector3d calculateGlobCoord(const double& img_x, const double& img_y, const double& dist);
     Eigen::Vector3d calculateQuadCoord(const double& img_x, const double& img_y, const double& dist);
+    Eigen::Vector3d calculatePlateFrontVec();
     void centreCallback(const detector_msgs::Centre& msg);
     void odomCallback(const nav_msgs::Odometry& msg);
     void cornersCallback(const detector_msgs::Corners& msg);
@@ -30,6 +31,7 @@ class PoseEstimatorNode {
     detector_msgs::Centre centre_coord_;
     detector_msgs::GlobalCoord global_coord_;
     detector_msgs::GlobalCoord front_coord_;
+    detector_msgs::GlobalCoord plate_front_vec_;
     detector_msgs::Corners corners_;
 
     nav_msgs::Odometry odom_;
@@ -38,6 +40,7 @@ class PoseEstimatorNode {
     Eigen::Vector3d c2_quad_coord_;
     Eigen::Vector3d c3_quad_coord_;
     Eigen::Vector3d c4_quad_coord_;
+    Eigen::Vector3d plate_front_vec_temp_;
     Eigen::Vector3d straight_vec_;
 
     ros::Subscriber centre_coord_sub_;
@@ -46,6 +49,7 @@ class PoseEstimatorNode {
 
     ros::Publisher glob_coord_pub_;
     ros::Publisher front_coord_pub_;
+    ros::Publisher plate_front_vec_pub_;
 
     PoseEstimator pose_est_;
 };
