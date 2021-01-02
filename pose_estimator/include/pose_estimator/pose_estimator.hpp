@@ -20,13 +20,19 @@ class PoseEstimatorNode {
   private:
     Eigen::Vector3d calculateGlobCoord(const double& img_x, const double& img_y, const double& dist);
     Eigen::Vector3d calculateQuadCoord(const double& img_x, const double& img_y, const double& dist);
+    Eigen::Vector3d calculateQuadCoord2(const double& img_x, const double& img_y, const double& dist);
     Eigen::Vector3d calculatePlateFrontVec();
+    void calculateCorrectionAngles();
+    void calculateScalingFactor();
     void centreCallback(const detector_msgs::Centre& msg);
     void odomCallback(const nav_msgs::Odometry& msg);
     void cornersCallback(const detector_msgs::Corners& msg);
 
     int image_height_;
     int image_width_;
+    float area_;
+    float actual_area_;
+    double dist_;
 
     detector_msgs::Centre centre_coord_;
     detector_msgs::GlobalCoord global_coord_;

@@ -41,6 +41,10 @@ void PoseEstimator::CamToQuad() {
     quad_coord_ = cam_to_quad_ * scale_up_ * cam_matrix_.inverse() * img_vec_ + t_cam_;
 }
 
+void PoseEstimator::CamToQuad2() {
+    quad_coord_ = cam_to_quad_ * cam_matrix_.inverse() * img_vec_ + t_cam_;
+}
+
 void PoseEstimator::QuadToGlob(const nav_msgs::Odometry& odom) {
     glob_coord_ = quad_to_glob_ * quad_coord_;
 

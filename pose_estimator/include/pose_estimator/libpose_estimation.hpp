@@ -25,6 +25,7 @@ class PoseEstimator {
     void setQuaternion(const nav_msgs::Odometry& odom);
 
     void CamToQuad();
+    void CamToQuad2();
     void QuadToGlob(const nav_msgs::Odometry& odom);
     void QuadToGlobPlateFrontVec(const nav_msgs::Odometry& odom, const Eigen::Vector3d cross_p);
 
