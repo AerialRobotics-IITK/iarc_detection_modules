@@ -4,6 +4,7 @@
 #include <eigen3/Eigen/Geometry>
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
+#include <math.h>
 
 #include <detector_msgs/Centre.h>
 #include <detector_msgs/GlobalCoord.h>
@@ -20,9 +21,9 @@ class PoseEstimatorNode {
   private:
     Eigen::Vector3d calculateGlobCoord(const double& img_x, const double& img_y, const double& dist);
     Eigen::Vector3d calculateQuadCoord(const double& img_x, const double& img_y, const double& dist);
-    Eigen::Vector3d calculateQuadCoord2(const double& img_x, const double& img_y, const double& dist);
+    Eigen::Vector3d calculateQuadCoordForDist(const double& img_x, const double& img_y);
     Eigen::Vector3d calculatePlateFrontVec();
-    void calculateCorrectionAngles();
+    void publishCorrectionAngles();
     void calculateScalingFactor();
     void centreCallback(const detector_msgs::Centre& msg);
     void odomCallback(const nav_msgs::Odometry& msg);
@@ -31,7 +32,7 @@ class PoseEstimatorNode {
     int image_height_;
     int image_width_;
     float area_;
-    float actual_area_;
+    float actual_area_ = 0.095;
     double dist_;
 
     detector_msgs::Centre centre_coord_;
@@ -39,6 +40,7 @@ class PoseEstimatorNode {
     detector_msgs::GlobalCoord front_coord_;
     detector_msgs::GlobalCoord plate_front_vec_;
     detector_msgs::Corners corners_;
+    detector_msgs::GlobalCoord yaw_correction_;
 
     nav_msgs::Odometry odom_;
     Eigen::Vector3d glob_coord_;
@@ -56,6 +58,7 @@ class PoseEstimatorNode {
     ros::Publisher glob_coord_pub_;
     ros::Publisher front_coord_pub_;
     ros::Publisher plate_front_vec_pub_;
+    ros::Publisher yaw_correction_pub_;
 
     PoseEstimator pose_est_;
 };
