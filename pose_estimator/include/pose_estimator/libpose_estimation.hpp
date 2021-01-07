@@ -13,6 +13,8 @@ class PoseEstimator {
 
     void getDistance(const float& dist);
     Eigen::Vector3d getGlobCoord();
+    Eigen::Vector3d getQuadCoord();
+    Eigen::Vector3d getPlateFrontVec();
 
     void setCamToQuadMatrix(const std::vector<double>& mat);
     void setCamMatrix(const std::vector<double>& mat);
@@ -23,7 +25,9 @@ class PoseEstimator {
     void setQuaternion(const nav_msgs::Odometry& odom);
 
     void CamToQuad();
+    void CamToQuadForDist();
     void QuadToGlob(const nav_msgs::Odometry& odom);
+    void QuadToGlobPlateFrontVec(const nav_msgs::Odometry& odom, const Eigen::Vector3d cross_p);
 
   private:
     Eigen::Matrix3d scale_up_;
@@ -35,6 +39,7 @@ class PoseEstimator {
     Eigen::Vector3d t_cam_;
     Eigen::Vector3d quad_coord_;
     Eigen::Vector3d glob_coord_;
+    Eigen::Vector3d plate_front_vec_;
 
     bool verbose_;
 };

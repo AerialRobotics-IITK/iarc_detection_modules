@@ -31,6 +31,7 @@ void PlateDetectorNode::init(ros::NodeHandle& nh) {
     centre_pub_ = nh_private.advertise<detector_msgs::Centre>("centre_coord", 10);
     thresh_pub_ = nh_private.advertise<sensor_msgs::Image>("thresh_img", 10);
     contour_pub_ = nh_private.advertise<sensor_msgs::Image>("contours", 10);
+    corners_pub_ = nh_private.advertise<detector_msgs::Corners>("corners", 10);
 }
 
 void PlateDetectorNode::run() {
@@ -50,12 +51,23 @@ void PlateDetectorNode::run() {
     centre_coord_.a = (float) area;
     centre_coord_.header.stamp = ros::Time::now();
 
+    cv::Point2f* corners = detect_.getCorners();
+    rect_corners_.c1_x = corners[0].x;
+    rect_corners_.c1_y = corners[0].y;
+    rect_corners_.c2_x = corners[1].x;
+    rect_corners_.c2_y = corners[1].y;
+    rect_corners_.c3_x = corners[2].x;
+    rect_corners_.c3_y = corners[2].y;
+    rect_corners_.c4_x = corners[3].x;
+    rect_corners_.c4_y = corners[3].y;
+
     sensor_msgs::ImagePtr thresh_msg = cv_bridge::CvImage(std_msgs::Header(), "mono8", detect_.getThresh()).toImageMsg();
     sensor_msgs::ImagePtr contour_msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", img_).toImageMsg();
 
     thresh_pub_.publish(thresh_msg);
     contour_pub_.publish(contour_msg);
     centre_pub_.publish(centre_coord_);
+    corners_pub_.publish(rect_corners_);
 }
 
 void PlateDetectorNode::imageCallback(const sensor_msgs::ImageConstPtr& msg) {

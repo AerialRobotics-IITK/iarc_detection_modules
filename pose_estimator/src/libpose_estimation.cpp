@@ -41,6 +41,10 @@ void PoseEstimator::CamToQuad() {
     quad_coord_ = cam_to_quad_ * scale_up_ * cam_matrix_.inverse() * img_vec_ + t_cam_;
 }
 
+void PoseEstimator::CamToQuadForDist() {
+    quad_coord_ = cam_to_quad_ * cam_matrix_.inverse() * img_vec_ + t_cam_;
+}
+
 void PoseEstimator::QuadToGlob(const nav_msgs::Odometry& odom) {
     glob_coord_ = quad_to_glob_ * quad_coord_;
 
@@ -49,8 +53,20 @@ void PoseEstimator::QuadToGlob(const nav_msgs::Odometry& odom) {
     glob_coord_(2) = glob_coord_(2) + odom.pose.pose.position.z;
 }
 
+void PoseEstimator::QuadToGlobPlateFrontVec(const nav_msgs::Odometry& odom, const Eigen::Vector3d cross_p) {
+    plate_front_vec_ = quad_to_glob_ * cross_p;
+}
+
 Eigen::Vector3d PoseEstimator::getGlobCoord() {
     return glob_coord_;
+}
+
+Eigen::Vector3d PoseEstimator::getQuadCoord() {
+    return quad_coord_;
+}
+
+Eigen::Vector3d PoseEstimator::getPlateFrontVec() {
+    return plate_front_vec_;
 }
 
 void PoseEstimator::setCamToQuadMatrix(const std::vector<double>& mat) {

@@ -2,6 +2,7 @@
 
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+#include <iostream>
 
 #include <utility>
 #include <vector>
@@ -12,6 +13,7 @@ class PlateDetector {
   public:
     std::pair<int, int> getCentre();
     cv::Mat getThresh();
+    cv::Point2f* getCorners();
     double getDistance();
     double getArea();
 
