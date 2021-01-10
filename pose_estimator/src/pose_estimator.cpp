@@ -1,6 +1,6 @@
 #include <pose_estimator/pose_estimator.hpp>
 
-namespace iarc2020::pose_estimation {
+namespace ariitk::pose_estimation {
 
 void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     centre_coord_sub_ = nh.subscribe("centre_coord", 10, &PoseEstimatorNode::centreCallback, this);
@@ -155,4 +155,4 @@ void PoseEstimatorNode::cornersCallback(const detector_msgs::Corners& msg) {
     corners_ = msg;
 }
 
-}  // namespace iarc2020::pose_estimation
+}  // namespace ariitk::pose_estimation

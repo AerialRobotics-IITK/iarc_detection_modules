@@ -1,6 +1,6 @@
 #include <led_detector/led_detector.hpp>
 
-using namespace iarc2020::led_detection;
+using namespace ariitk::led_detection;
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "led_detector_node");

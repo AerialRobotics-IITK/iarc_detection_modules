@@ -9,7 +9,7 @@
 #include <detector_msgs/Corners.h>
 #include <plate_detector/libplate_detection.hpp>
 
-namespace iarc2020::plate_detection {
+namespace ariitk::plate_detection {
 
 class PlateDetectorNode {
   public:
@@ -34,4 +34,4 @@ class PlateDetectorNode {
     detector_msgs::Corners rect_corners_;
 };
 
-}  // namespace iarc2020::plate_detection
+}  // namespace ariitk::plate_detection

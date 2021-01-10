@@ -11,7 +11,7 @@
 #include <detector_msgs/Corners.h>
 #include <pose_estimator/libpose_estimation.hpp>
 
-namespace iarc2020::pose_estimation {
+namespace ariitk::pose_estimation {
 
 class PoseEstimatorNode {
   public:
@@ -63,4 +63,4 @@ class PoseEstimatorNode {
     PoseEstimator pose_est_;
 };
 
-}  // namespace iarc2020::pose_estimation
+}  // namespace ariitk::pose_estimation

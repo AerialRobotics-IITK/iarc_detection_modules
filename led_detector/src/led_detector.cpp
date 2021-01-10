@@ -1,6 +1,6 @@
 #include <led_detector/led_detector.hpp>
 
-namespace iarc2020::led_detection {
+namespace ariitk::led_detection {
 
 void LedDetectorNode::init(ros::NodeHandle& nh) {
     int h_min_red, s_min_red, v_min_red;
@@ -94,4 +94,4 @@ void LedDetectorNode::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
     img_ = cv_ptr_->image;
 }
 
-}  // namespace iarc2020::led_detection
+}  // namespace ariitk::led_detection

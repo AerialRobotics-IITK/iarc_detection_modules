@@ -8,7 +8,7 @@
 #include <detector_msgs/Centre.h>
 #include <led_detector/libled_detection.hpp>
 
-namespace iarc2020::led_detection {
+namespace ariitk::led_detection {
 
 class LedDetectorNode {
     public:
@@ -33,4 +33,4 @@ class LedDetectorNode {
     detector_msgs::Centre centre_coord_green_;
 };
 
-}  // namespace iarc2020::led_detection
+}  // namespace ariitk::led_detection
