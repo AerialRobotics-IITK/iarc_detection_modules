@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-namespace iarc2020::led_detection {
+namespace ariitk::led_detection {
 
 class LedDetector {
   public:
@@ -60,4 +60,4 @@ class LedDetector {
     double area_;
 };
 
-}  // namespace iarc2020::led_detection
+}  // namespace ariitk::led_detection

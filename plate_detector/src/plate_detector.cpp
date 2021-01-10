@@ -1,6 +1,6 @@
 #include <plate_detector/plate_detector.hpp>
 
-namespace iarc2020::plate_detection {
+namespace ariitk::plate_detection {
 
 void PlateDetectorNode::init(ros::NodeHandle& nh) {
     int h_min, s_min, v_min;
@@ -83,4 +83,4 @@ void PlateDetectorNode::imageCallback(const sensor_msgs::ImageConstPtr& msg) {
     img_ = cv_ptr_->image;
 }
 
-}  // namespace iarc2020::plate_detection
+}  // namespace ariitk::plate_detection

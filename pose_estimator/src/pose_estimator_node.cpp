@@ -1,6 +1,6 @@
 #include <pose_estimator/pose_estimator.hpp>
 
-using namespace iarc2020::pose_estimation;
+using namespace ariitk::pose_estimation;
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "pose_estimator_node");

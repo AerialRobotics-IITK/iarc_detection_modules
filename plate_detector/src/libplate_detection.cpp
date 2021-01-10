@@ -1,6 +1,6 @@
 #include <plate_detector/libplate_detection.hpp>
 
-namespace iarc2020::plate_detection {
+namespace ariitk::plate_detection {
 
 void PlateDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
     canny_param_lower_ = lower;
@@ -122,4 +122,4 @@ void PlateDetector::setMinArea(const int& area) {
     min_contour_area_ = area;
 }
 
-}  // namespace iarc2020::plate_detection
+}  // namespace ariitk::plate_detection

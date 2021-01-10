@@ -1,6 +1,6 @@
 #include <led_detector/libled_detection.hpp>
 
-namespace iarc2020::led_detection {
+namespace ariitk::led_detection {
 
 void LedDetector::setCannyParams(const int& lower, const int& upper, const int& size) {
     canny_param_lower_ = lower;
@@ -107,4 +107,4 @@ void LedDetector::setMaxArea(const int& area) {
     max_contour_area_ = area;
 }
 
-}  // namespace iarc2020::led_detection
+}  // namespace ariitk::led_detection

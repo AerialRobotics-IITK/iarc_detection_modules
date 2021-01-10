@@ -5,7 +5,7 @@
 #include <nav_msgs/Odometry.h>
 #include <tf/tf.h>
 
-namespace iarc2020::pose_estimation {
+namespace ariitk::pose_estimation {
 
 class PoseEstimator {
   public:
@@ -44,4 +44,4 @@ class PoseEstimator {
     bool verbose_;
 };
 
-}  // namespace iarc2020::pose_estimation
+}  // namespace ariitk::pose_estimation

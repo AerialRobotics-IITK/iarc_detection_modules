@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-namespace iarc2020::plate_detection {
+namespace ariitk::plate_detection {
 
 class PlateDetector {
   public:
@@ -53,4 +53,4 @@ class PlateDetector {
     double area_;
 };
 
-}  // namespace iarc2020::plate_detection
+}  // namespace ariitk::plate_detection
