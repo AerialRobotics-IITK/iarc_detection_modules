@@ -3,9 +3,9 @@
 namespace ariitk::pose_estimation {
 
 void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
-    centre_coord_sub_ = nh.subscribe("centre_coord", 10, &PoseEstimatorNode::centreCallback, this);
+    centre_coord_sub_ = nh.subscribe("agent_state_machine/centre_coord", 10, &PoseEstimatorNode::centreCallback, this);
     odom_sub_ = nh.subscribe("odom", 10, &PoseEstimatorNode::odomCallback, this);
-    corners_sub_ = nh.subscribe("corners", 10, &PoseEstimatorNode::cornersCallback, this);
+    corners_sub_ = nh.subscribe("agent_state_machine/corners", 10, &PoseEstimatorNode::cornersCallback, this);
 
     glob_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("estimated_coord", 10);
     front_coord_pub_ = nh_private.advertise<detector_msgs::GlobalCoord>("front_coord", 10);
@@ -35,6 +35,7 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
 }
 
 void PoseEstimatorNode::run() {
+    // std::cout << corners_ << std::endl;
     calculateScalingFactor();
 
     straight_vec_ = calculateGlobCoord(image_width_ / 2, image_height_ / 2, dist_);
