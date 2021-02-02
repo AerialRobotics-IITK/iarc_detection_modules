@@ -14,6 +14,8 @@
   <run_depend>feature_detection</run_depend>
   <run_depend>pose_estimator</run_depend>
   <run_depend>detector_msgs</run_depend>
+  <run_depend>text_detector</run_depend>
+  <run_depend>text_pose_estimator</run_depend>
 
   <export>
     <metapackage/>
