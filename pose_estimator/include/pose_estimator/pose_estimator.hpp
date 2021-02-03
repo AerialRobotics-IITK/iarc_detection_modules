@@ -10,6 +10,7 @@
 #include <detector_msgs/GlobalCoord.h>
 #include <detector_msgs/Corners.h>
 #include <pose_estimator/libpose_estimation.hpp>
+// #include <pose_estimator/newton_raphson.hpp>
 
 namespace ariitk::pose_estimation {
 
@@ -17,6 +18,9 @@ class PoseEstimatorNode {
   public:
     void init(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
     void run();
+    Eigen::Vector4d l_function(Eigen::Vector4d var);
+    Eigen::Matrix4d l_derivative_inv(Eigen::Vector4d var);
+    bool l_convergence(Eigen::Vector4d var);
 
   private:
     Eigen::Vector3d calculateGlobCoord(const double& img_x, const double& img_y, const double& dist);
@@ -34,6 +38,7 @@ class PoseEstimatorNode {
     float area_;
     float actual_area_ = 0.095;
     double dist_;
+    double lamdas_[4];
 
     detector_msgs::Centre centre_coord_;
     detector_msgs::GlobalCoord global_coord_;
