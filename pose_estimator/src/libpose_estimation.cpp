@@ -38,7 +38,9 @@ void PoseEstimator::setQuaternion(const nav_msgs::Odometry& odom) {
 }
 
 void PoseEstimator::CamToQuad() {
-    quad_coord_ = cam_to_quad_ * scale_up_ * cam_matrix_.inverse() * img_vec_ + t_cam_;
+    quad_coord_ = cam_to_quad_ * scale_up_ * cam_matrix_.inverse() * img_vec_;
+    // std::cout << quad_coord_[0] << " " << quad_coord_[1] << " " << quad_coord_[2] << std::endl;
+    // std::cout << scale_up_ << std::endl;
 }
 
 void PoseEstimator::CamToQuadForDist() {
