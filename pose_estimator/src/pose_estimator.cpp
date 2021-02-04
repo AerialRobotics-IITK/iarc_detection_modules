@@ -35,9 +35,9 @@ void PoseEstimatorNode::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
 }
 
 void PoseEstimatorNode::run() {
-    calculateScalingFactor();
+    // std::cout << "bla" << dist_ << std::endl << std::endl;
 
-    straight_vec_ = calculateGlobCoord(image_width_ / 2, image_height_ / 2, dist_);
+    straight_vec_ = calculateGlobCoord(image_width_ / 2, image_height_ / 2, 5);
     straight_vec_(0) -= odom_.pose.pose.position.x;  //* Converting straight_vec from position vec to direction vec
     straight_vec_(1) -= odom_.pose.pose.position.y;
     straight_vec_(2) -= odom_.pose.pose.position.z;
@@ -47,10 +47,10 @@ void PoseEstimatorNode::run() {
 
     front_coord_pub_.publish(front_coord_);
 
-    // if ((centre_coord_.x == -1) || (centre_coord_.y == -1)) {
-    //     glob_coord_pub_.publish(global_coord_);
-    //     return;
-    // }
+    if ((centre_coord_.x == -1) || (centre_coord_.y == -1)) {
+        // glob_coord_pub_.publish(global_coord_);
+        return;
+    }
 
     // glob_coord_ = calculateGlobCoord(centre_coord_.x, centre_coord_.y, dist_);
     // global_coord_.x = glob_coord_(0);
@@ -58,6 +58,7 @@ void PoseEstimatorNode::run() {
     // global_coord_.z = glob_coord_(2);
     // std::cout << lamdas_[0] << " " << lamdas_[1] << " " << lamdas_[2] << " " << lamdas_[3] << " " << std::endl;
 
+    calculateScalingFactor();
     plate_front_vec_temp_ = calculatePlateFrontVec();
     plate_front_vec_.x = plate_front_vec_temp_(0);
     plate_front_vec_.y = plate_front_vec_temp_(1);
@@ -95,7 +96,6 @@ Eigen::Vector3d PoseEstimatorNode::calculateQuadCoordForDist(const double& img_x
 }
 
 Eigen::Vector3d PoseEstimatorNode::calculatePlateFrontVec() {
-    
     Eigen::Vector3d corner_glob_coords[4];
 
     corner_glob_coords[0] = calculateGlobCoord(corners_.c1_x, corners_.c1_y, lamdas_[0]);
@@ -106,15 +106,15 @@ Eigen::Vector3d PoseEstimatorNode::calculatePlateFrontVec() {
     // std::cout << corners_.c1_x << " " << corners_.c1_y << " " << corners_.c2_x << " " << corners_.c2_y << std::endl;
     // std::cout << c1_quad_coord_ << " " << c2_quad_coord_ << " " << c3_quad_coord_ << " " << c4_quad_coord_ << " " << std::endl;
 
-    glob_coord_[0] = (corner_glob_coords[0][0] + corner_glob_coords[1][0] + corner_glob_coords[2][0] + corner_glob_coords[3][0])/4;
-    glob_coord_[1] = (corner_glob_coords[0][1] + corner_glob_coords[1][1] + corner_glob_coords[2][1] + corner_glob_coords[3][1])/4;
-    glob_coord_[2] = (corner_glob_coords[0][2] + corner_glob_coords[1][2] + corner_glob_coords[2][2] + corner_glob_coords[3][2])/4;
+    glob_coord_[0] = (corner_glob_coords[0][0] + corner_glob_coords[1][0] + corner_glob_coords[2][0] + corner_glob_coords[3][0]) / 4;
+    glob_coord_[1] = (corner_glob_coords[0][1] + corner_glob_coords[1][1] + corner_glob_coords[2][1] + corner_glob_coords[3][1]) / 4;
+    glob_coord_[2] = (corner_glob_coords[0][2] + corner_glob_coords[1][2] + corner_glob_coords[2][2] + corner_glob_coords[3][2]) / 4;
     global_coord_.x = glob_coord_(0);
     global_coord_.y = glob_coord_(1);
     global_coord_.z = glob_coord_(2);
 
-    std::cout << glob_coord_[0] << " " << glob_coord_[1] << " " << glob_coord_[2] << " " << std::endl;
-    
+    // std::cout << glob_coord_[0] << " " << glob_coord_[1] << " " << glob_coord_[2] << " " << std::endl;
+
     Eigen::Vector3d cross_p;
     cross_p = (corner_glob_coords[1] - corner_glob_coords[3]).cross(corner_glob_coords[0] - corner_glob_coords[2]);
     // pose_est_.setQuaternion(odom_);
@@ -136,10 +136,12 @@ void PoseEstimatorNode::calculateScalingFactor() {
     // NR<Eigen::Vector4d, Eigen::Matrix4d, PoseEstimatorNode> solve(&PoseEstimatorNode::l_function, &PoseEstimatorNode::l_derivative_inv, this);
     // solve.setConvergence(&PoseEstimatorNode::l_convergence);
     Eigen::Vector4d initial = {centre_coord_.d, centre_coord_.d, centre_coord_.d, centre_coord_.d};
-    while (!l_convergence(l_function(initial))) initial = (initial - (l_derivative_inv(initial) * l_function(initial)));
+    while (!l_convergence(l_function(initial)))
+        initial = (initial - (l_derivative_inv(initial) * l_function(initial)));
 
     // Eigen::Vector4d roots = solve.root(guess);
-    for (int i = 0; i < 4; i++) lamdas_[i] = initial(i);
+    for (int i = 0; i < 4; i++)
+        lamdas_[i] = initial(i);
     // std::cout << initial[0] << " " << initial[1] << " " << initial[2] << " " << initial[3] << " " << std::endl;
 }
 
@@ -200,23 +202,22 @@ Eigen::Vector4d PoseEstimatorNode::l_function(Eigen::Vector4d var) {
     //             lamda_one * lamda_one * (c1_quad_coord_.dot(c1_quad_coord_)) + lamda_two * lamda_one * (c2_quad_coord_.dot(c1_quad_coord_));
 
     for (int i = 0; i < 4; i++) {
-        double lamda_one = var[i%4];
-        double lamda_two = var[(i+1)%4];
-        double lamda_three = var[(i+2)%4];
+        double lamda_one = var[i % 4];
+        double lamda_two = var[(i + 1) % 4];
+        double lamda_three = var[(i + 2) % 4];
 
-        Eigen::Vector3d c1 = c[i%4];
-        Eigen::Vector3d c2 = c[(i+1)%4];
-        Eigen::Vector3d c3 = c[(i+2)%4];
+        Eigen::Vector3d c1 = c[i % 4];
+        Eigen::Vector3d c2 = c[(i + 1) % 4];
+        Eigen::Vector3d c3 = c[(i + 2) % 4];
 
-
-        result(i) = lamda_one * lamda_two * (c1.dot(c2)) - lamda_one * lamda_three * (c1.dot(c3)) -
-                    lamda_two * lamda_two * (c2.dot(c2)) + lamda_three * lamda_two * (c2.dot(c3));
+        result(i) = lamda_one * lamda_two * (c1.dot(c2)) - lamda_one * lamda_three * (c1.dot(c3)) - lamda_two * lamda_two * (c2.dot(c2)) +
+                    lamda_three * lamda_two * (c2.dot(c3));
     }
-    
+
     return result;
 }
 
-Eigen::Matrix4d PoseEstimatorNode::l_derivative_inv(Eigen::Vector4d var){
+Eigen::Matrix4d PoseEstimatorNode::l_derivative_inv(Eigen::Vector4d var) {
     Eigen::Matrix4d result;
     Eigen::Vector3d c[4] = {c1_quad_coord_, c2_quad_coord_, c3_quad_coord_, c4_quad_coord_};
 
@@ -226,24 +227,24 @@ Eigen::Matrix4d PoseEstimatorNode::l_derivative_inv(Eigen::Vector4d var){
     // double lamda_four = var[3];
 
     for (int i = 0; i < 4; i++) {
-        double lamda_one = var[i%4];
-        double lamda_two = var[(i+1)%4];
-        double lamda_three = var[(i+2)%4];
+        double lamda_one = var[i % 4];
+        double lamda_two = var[(i + 1) % 4];
+        double lamda_three = var[(i + 2) % 4];
 
-        Eigen::Vector3d c1 = c[i%4];
-        Eigen::Vector3d c2 = c[(i+1)%4];
-        Eigen::Vector3d c3 = c[(i+2)%4];
+        Eigen::Vector3d c1 = c[i % 4];
+        Eigen::Vector3d c2 = c[(i + 1) % 4];
+        Eigen::Vector3d c3 = c[(i + 2) % 4];
 
-        result(i, i%4) = lamda_two*(c1.dot(c2)) - lamda_three*(c1.dot(c3));
-        result(i, (i+1)%4) = lamda_one*(c1.dot(c2)) - 2*lamda_two*(c2.dot(c2)) + lamda_three*(c2.dot(c3));
-        result(i, (i+2)%4) = -lamda_one*(c1.dot(c2)) + lamda_two*(c2.dot(c3));
-        result(i, (i+3)%4) = 0;
+        result(i, i % 4) = lamda_two * (c1.dot(c2)) - lamda_three * (c1.dot(c3));
+        result(i, (i + 1) % 4) = lamda_one * (c1.dot(c2)) - 2 * lamda_two * (c2.dot(c2)) + lamda_three * (c2.dot(c3));
+        result(i, (i + 2) % 4) = -lamda_one * (c1.dot(c2)) + lamda_two * (c2.dot(c3));
+        result(i, (i + 3) % 4) = 0;
     }
 
     return result.inverse();
 }
 
-    bool PoseEstimatorNode::l_convergence(Eigen::Vector4d var) {
-        return (var.norm() < 0.01);
-    }
+bool PoseEstimatorNode::l_convergence(Eigen::Vector4d var) {
+    return (var.norm() < 0.0001);
+}
 }  // namespace ariitk::pose_estimation
